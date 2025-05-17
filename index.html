@@ -1,16 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Abre Muchas Pestañas de Google</title>
+<title>¡MaxiChat!</title>
 <style>
-  /* Estilos CSS aquí */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #d1fae5; /* Un verde claro similar al fondo de WhatsApp */
+    margin: 0;
+    color: #333;
+  }
+  #container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+  }
+  h1 {
+    color: #25d366; /* Verde principal de WhatsApp */
+    margin-bottom: 20px;
+  }
+  input[type="text"] {
+    padding: 12px 15px;
+    margin-bottom: 25px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    width: calc(100% - 30px);
+    box-sizing: border-box;
+  }
+  input[type="text"]:focus {
+    outline: none;
+    border-color: #25d366;
+    box-shadow: 0 0 6px rgba(37, 211, 102, 0.5);
+  }
+  button {
+    padding: 14px 24px;
+    background-color: #25d366; /* Verde principal de WhatsApp */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.2s ease-in-out;
+  }
+  button:hover {
+    background-color: #128c7e; /* Verde más oscuro al pasar el ratón */
+  }
+  .demo-text {
+    color: #777;
+    font-size: 14px;
+    margin-top: 20px;
+  }
 </style>
 </head>
 <body>
 
 <div id="container">
-  <input type="text" id="textoBusqueda">
-  <button id="botonMax" onclick="abrirPestanas()">Max</button>
+  <h1>¡MaxiChat! 🚀</h1>
+  <input type="text" id="textoBusqueda" placeholder="Escribe '<' + tu mensaje">
+  <button id="botonMax" onclick="abrirPestanas()">¡Maximizar Mensajes! 💬</button>
+  <p class="demo-text">Esta es una versión demo.</p>
 </div>
 
 <script>
@@ -27,12 +83,12 @@ textoBusqueda.addEventListener("keypress", function(event) {
 function abrirPestanas() {
   const texto = textoBusqueda.value;
   if (!texto.startsWith("<")) {
-    alert("La web se encuentra actualmente en fase demo o pruebas y algunas funcionalidades aún no están completas.");
+    alert("¡Ups! Parece que esta función aún está en desarrollo. Asegúrate de comenzar con '<' para probarla.");
     return;
   }
 
   if (texto.trim().length <= 1) {
-    alert("Por favor, escribe algo después del '<'.");
+    alert("Por favor, escribe algo después del '<' para enviar mensajes.");
     return;
   }
 
@@ -41,7 +97,7 @@ function abrirPestanas() {
     "", ".", "-", "3", "_", "a", "b", "1", "2", "!", "?", " ", "%20", "+", "&", "$", "#", "@", "*", "(", ")", "[", "]", "{", "}", ",", ";", ":", "'", '"', "/", "\\", "<", ">", "€", "£", "¥", "₪", "₹", "₩", "₱", "฿", "₫", "₡", "₵", "₲", "₸", "₺", "₴", "元", "円", "원"
   ];
   const numPestanas = 500;
-  const iconosSimulados = ["*", "#", "@", "$", "%"]; // Algunos caracteres para intentar variar el título brevemente
+  const iconosSimulados = ["✨", "🔥", "🚀", "💡", "🌟"]; //Emojis para simular variedad
 
   for (let i = 0; i < numPestanas; i++) {
     const indiceVariacion = i % variaciones.length;
@@ -51,9 +107,8 @@ function abrirPestanas() {
     const nuevaPestana = window.open(urlGoogle, "_blank");
     if (nuevaPestana) {
       try {
-        nuevaPestana.document.title = iconosSimulados[indiceIcono] + " - Google Search";
+        nuevaPestana.document.title = iconosSimulados[indiceIcono] + " - MaxiChat";
       } catch (error) {
-        // Puede haber un error de seguridad si se intenta acceder al documento de una ventana abierta por otra.
         console.error("Error al intentar cambiar el título:", error);
       }
     }
