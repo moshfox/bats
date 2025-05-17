@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Abre Muchas Pestañas de Google</title>
+<style>
+  /* Estilos CSS aquí */
+</style>
+</head>
+<body>
+
+<div id="container">
+  <input type="text" id="textoBusqueda">
+  <button id="botonMax" onclick="abrirPestanas()">Max</button>
+</div>
+
+<script>
+const textoBusqueda = document.getElementById("textoBusqueda");
+const botonMax = document.getElementById("botonMax");
+
+textoBusqueda.addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    botonMax.click();
+  }
+});
+
+function abrirPestanas() {
+  const texto = textoBusqueda.value;
+  if (!texto.startsWith("<")) {
+    alert("La web se encuentra actualmente en fase demo o pruebas y algunas funcionalidades aún no están completas.");
+    return;
+  }
+
+  if (texto.trim().length <= 1) {
+    alert("Por favor, escribe algo después del '<'.");
+    return;
+  }
+
+  const textoParaBuscar = texto.substring(1);
+  const variaciones = [
+    "", ".", "-", "3", "_", "a", "b", "1", "2", "!", "?", " ", "%20", "+", "&", "$", "#", "@", "*", "(", ")", "[", "]", "{", "}", ",", ";", ":", "'", '"', "/", "\\", "<", ">", "€", "£", "¥", "₪", "₹", "₩", "₱", "฿", "₫", "₡", "₵", "₲", "₸", "₺", "₴", "元", "円", "원"
+  ];
+  const numPestanas = 500;
+  const iconosSimulados = ["*", "#", "@", "$", "%"]; // Algunos caracteres para intentar variar el título brevemente
+
+  for (let i = 0; i < numPestanas; i++) {
+    const indiceVariacion = i % variaciones.length;
+    const textoConVariacion = textoParaBuscar + variaciones[indiceVariacion];
+    const urlGoogle = "https://www.google.com/search?q=" + encodeURIComponent(textoConVariacion);
+    const indiceIcono = i % iconosSimulados.length;
+    const nuevaPestana = window.open(urlGoogle, "_blank");
+    if (nuevaPestana) {
+      try {
+        nuevaPestana.document.title = iconosSimulados[indiceIcono] + " - Google Search";
+      } catch (error) {
+        // Puede haber un error de seguridad si se intenta acceder al documento de una ventana abierta por otra.
+        console.error("Error al intentar cambiar el título:", error);
+      }
+    }
+  }
+}
+</script>
+
+</body>
+</html>
