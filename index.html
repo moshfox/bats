@@ -2,133 +2,98 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>¡MaxiChat!</title>
+  <title>MaxiChat Portal</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      background-color: #e6fffa;
+      font-family: sans-serif;
+      background-color: #e0f7fa;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
-
-    .pantalla {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      background-color: #ffffff;
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-      width: 90%;
-      max-width: 450px;
-      transition: all 0.5s ease;
+    #container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
+      text-align: center;
     }
-
-    .visible {
-      display: flex;
-    }
-
-    h1 {
-      color: #25d366;
-      margin-bottom: 20px;
-    }
-
-    input[type="text"] {
+    input, button {
       padding: 12px;
-      width: 100%;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      margin-bottom: 20px;
       font-size: 16px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 100%;
+      box-sizing: border-box;
     }
-
     button {
-      padding: 12px 20px;
       background-color: #25d366;
       color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
       cursor: pointer;
+      transition: background-color 0.3s;
     }
-
     button:hover {
       background-color: #128c7e;
-    }
-
-    .loader {
-      font-size: 24px;
-      animation: blink 1s infinite;
-      color: #25d366;
-      margin-top: 20px;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
     }
   </style>
 </head>
 <body>
 
-<div id="pantallaInicio" class="pantalla visible">
-  <h1>¡MaxiChat! 💬</h1>
-  <input type="text" id="textoBusqueda" placeholder="Escribe tu mensaje (empieza con <)">
-  <button onclick="cambiarPantalla()">¡Enviar Mensajes!</button>
-  <p style="margin-top: 15px; font-size: 13px; color: #777;">Versión demo mejorada.</p>
-</div>
-
-<div id="pantallaEnvio" class="pantalla">
-  <h1>Enviando... 🚀</h1>
-  <p class="loader">Abriendo pestañas...</p>
+<div id="container">
+  <h1>¡MaxiChat! 🌟</h1>
+  <input type="text" id="inputTexto" placeholder="Empieza con < para activar...">
+  <button onclick="abrirDesdeOtraPestana()">Lanzar desde otra pestaña</button>
 </div>
 
 <script>
-function cambiarPantalla() {
-  const texto = document.getElementById("textoBusqueda").value;
-
-  if (!texto.startsWith("<")) {
-    alert("Tu mensaje debe comenzar con '<' para esta demo.");
+function abrirDesdeOtraPestana() {
+  const texto = document.getElementById("inputTexto").value;
+  if (!texto.startsWith("<") || texto.length <= 1) {
+    alert("Tu mensaje debe empezar con '<' y contener texto.");
     return;
   }
 
-  if (texto.trim().length <= 1) {
-    alert("Por favor, escribe algo más.");
+  const mensaje = texto.substring(1);
+  const win = window.open("", "_blank");
+
+  if (!win) {
+    alert("Tu navegador ha bloqueado la nueva pestaña. Permite ventanas emergentes.");
     return;
   }
 
-  // Cambiar de pantalla
-  document.getElementById("pantallaInicio").classList.remove("visible");
-  document.getElementById("pantallaEnvio").classList.add("visible");
+  // Generar HTML dinámico con JS que abrirá las pestañas
+  const html = `
+    <!DOCTYPE html>
+    <html lang="es">
+    <head><title>MaxiChat Launcher</title></head>
+    <body style="font-family:sans-serif; text-align:center; background:#fff; padding-top:50px;">
+      <h2>Lanzando pestañas para: <span style="color:#25d366;">${mensaje}</span></h2>
+      <p>Esto puede tardar unos segundos. 🔄</p>
+      <script>
+        const base = ${JSON.stringify(mensaje)};
+        const variaciones = ["", ".", "-", "1", "2", "_", "a", "!", "%20"];
+        const iconos = ["✨", "🔥", "🚀", "💡"];
+        const total = 10;
 
-  // Esperar un momento antes de abrir las pestañas (para ver la transición)
-  setTimeout(() => abrirPestanas(texto), 1200);
-}
+        for (let i = 0; i < total; i++) {
+          const query = base + variaciones[i % variaciones.length];
+          const url = "https://www.google.com/search?q=" + encodeURIComponent(query);
+          const nueva = window.open(url, "_blank");
+          try {
+            if (nueva) nueva.document.title = iconos[i % iconos.length] + " MaxiChat";
+          } catch (e) {}
+        }
+      <\/script>
+    </body>
+    </html>
+  `;
 
-function abrirPestanas(texto) {
-  const textoParaBuscar = texto.substring(1);
-  const variaciones = ["", ".", "-", "1", "2", "_", "a", "!", "%20"];
-  const iconosSimulados = ["✨", "🔥", "🚀", "🌟"];
-  const numPestanas = 10; // Ajustado para evitar bloqueo del navegador
-
-  for (let i = 0; i < numPestanas; i++) {
-    const variacion = variaciones[i % variaciones.length];
-    const icono = iconosSimulados[i % iconosSimulados.length];
-    const url = "https://www.google.com/search?q=" + encodeURIComponent(textoParaBuscar + variacion);
-    const nuevaPestana = window.open(url, "_blank");
-
-    // Intentar cambiar el título (no funcionará en la mayoría de dominios externos)
-    try {
-      if (nuevaPestana) {
-        nuevaPestana.document.title = icono + " - MaxiChat";
-      }
-    } catch (e) {
-      // Seguridad del navegador
-    }
-  }
+  // Escribir el HTML generado en la nueva pestaña
+  win.document.open();
+  win.document.write(html);
+  win.document.close();
 }
 </script>
 
