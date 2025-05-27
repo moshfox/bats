@@ -394,11 +394,10 @@ function abrirPestanas() {
   hackermanOverlay.classList.add('active');
 
   // Tiempo de la animación en milisegundos (2 segundos)
-  const animDuration = 2000;
+  const animDuration = 2000; 
 
-  // 2. Iniciar la apertura de pestañas *después de un breve retraso*
-  // Esto permite que la animación visual se vea antes de que el navegador empiece
-  // a abrir las pestañas, lo cual puede ser un poco pesado.
+  // 2. Esperar a que la animación de Hackerman termine (2 segundos)
+  // Luego, comenzar a abrir las pestañas.
   setTimeout(() => {
     const iconosPersonalizados = iconosInput.value.split(',').map(icon => icon.trim()).filter(icon => icon.length > 0);
     const finalIconos = iconosPersonalizados.length === 0 ? ["✨", "🔥", "🚀", "💡", "🌟"] : iconosPersonalizados;
@@ -442,13 +441,12 @@ function abrirPestanas() {
         }
       }
     }
-  }, 100); // Pequeño retraso antes de empezar a abrir pestañas (100ms)
 
-  // 3. Ocultar la animación después de su duración total y re-habilitar el botón
-  setTimeout(() => {
+    // 3. Ocultar la animación después de que TODAS las pestañas se hayan *iniciado* su apertura
+    // Se ejecuta al final del segundo setTimeout, cuando el bucle de apertura ha terminado.
     hackermanOverlay.classList.remove('active');
     botonMax.disabled = false; // Re-habilita el botón
-  }, animDuration); // La animación durará los 2 segundos definidos
+  }, animDuration); // Este es el setTimeout que espera los 2 segundos completos
 }
 </script>
 
