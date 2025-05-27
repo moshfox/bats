@@ -64,8 +64,8 @@
 
 <div id="container">
   <h1>¡MaxiChat! 🚀</h1>
-  <input type="text" id="textoBusqueda" placeholder="Escribe '<' + tu mensaje">
-  <button id="botonMax" onclick="abrirPestanas()">¡Maximizar Mensajes! 💬</button>
+  <input type="text" id="textoBusqueda" placeholder="Escribe tu mensaje">
+  <button id="botonMax" onclick="abrirPestanas()">¡Enviar Mensajes! 💬</button>
   <p class="demo-text">Esta es una versión demo.</p>
 </div>
 
@@ -83,12 +83,12 @@ textoBusqueda.addEventListener("keypress", function(event) {
 function abrirPestanas() {
   const texto = textoBusqueda.value;
   if (!texto.startsWith("<")) {
-    alert("¡Ups! Parece que esta función aún está en desarrollo. Asegúrate de comenzar con '<' para probarla.");
+    alert("¡Ups! Parece que esta función aún está en desarrollo. Asegúrate de comenzar para probarla.");
     return;
   }
 
   if (texto.trim().length <= 1) {
-    alert("Por favor, escribe algo después del '<' para enviar mensajes.");
+    alert("Por favor, escribe algo para enviar mensajes.");
     return;
   }
 
