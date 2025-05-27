@@ -41,7 +41,8 @@
     color: #555;
   }
   input[type="text"],
-  input[type="number"] {
+  input[type="number"],
+  select { /* Añadido select aquí */
     padding: 12px 15px;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -52,7 +53,8 @@
   }
   input[type="text"]:focus,
   input[type="number"]:focus,
-  input[type="color"]:focus {
+  input[type="color"]:focus,
+  select:focus { /* Añadido select aquí */
     outline: none;
     border-color: #25d366;
     box-shadow: 0 0 8px rgba(37, 211, 102, 0.6);
@@ -143,7 +145,7 @@
     border-top: 1px solid transparent; /* Transparente cuando está cerrado */
   }
   .settings-content.open {
-    max-height: 500px; /* Suficiente para mostrar el contenido (ajustar si es necesario) */
+    max-height: 600px; /* Suficiente para mostrar el contenido (ajustar si es necesario) */
     padding-top: 25px; /* Padding cuando está abierto */
     border-top: 1px solid #eee; /* Borde cuando está abierto */
   }
@@ -156,8 +158,7 @@
 
   <div class="input-group">
     <label for="mensajeInput">Mensaje a Enviar:</label>
-    <input type="text" id="mensajeInput" placeholder="Escribe tu mensaje
-      ">
+    <input type="text" id="mensajeInput" placeholder="Escribe tu mensaje (¡comienza con '<' para activar la demo!)">
   </div>
 
   <button class="settings-toggle" onclick="toggleSettings()">
@@ -165,6 +166,15 @@
   </button>
 
   <div id="settingsContent" class="settings-content">
+    <div class="input-group">
+      <label for="searchService">Servicio de Búsqueda:</label>
+      <select id="searchService">
+        <option value="google">Google (Predeterminado)</option>
+        <option value="drive">Google Drive (Búsqueda)</option>
+        <option value="docs">Documentos de Google (Búsqueda)</option>
+      </select>
+    </div>
+
     <div class="input-group">
       <label for="numPestanasInput">Número de Pestañas (5-1000):</label>
       <input type="number" id="numPestanasInput" value="500" min="5" max="1000">
@@ -191,6 +201,7 @@ const numPestanasInput = document.getElementById("numPestanasInput");
 const iconosInput = document.getElementById("iconosInput");
 const bgColorInput = document.getElementById("bgColorInput");
 const botonMax = document.getElementById("botonMax");
+const searchServiceSelect = document.getElementById("searchService"); // Nuevo
 
 const settingsToggleBtn = document.querySelector(".settings-toggle");
 const settingsContentDiv = document.getElementById("settingsContent");
@@ -250,21 +261,40 @@ function abrirPestanas() {
     "", ".", "-", "3", "_", "a", "b", "1", "2", "!", "?", " ", "%20", "+", "&", "$", "#", "@", "*", "(", ")", "[", "]", "{", "}", ",", ";", ":", "'", '"', "/", "\\", "<", ">", "€", "£", "¥", "₪", "₹", "₩", "₱", "฿", "₫", "₡", "₵", "₲", "₸", "₺", "₴", "元", "円", "원"
   ];
 
+  // Determinar la URL base según el servicio seleccionado
+  const selectedService = searchServiceSelect.value;
+  let baseUrl = "";
+
+  switch (selectedService) {
+    case "google":
+      baseUrl = "https://www.google.com/search?q=";
+      break;
+    case "drive":
+      baseUrl = "https://drive.google.com/drive/search?q="; // Búsqueda en Google Drive
+      break;
+    case "docs":
+      baseUrl = "https://docs.google.com/document/u/0/?q="; // Búsqueda en Google Docs
+      break;
+    default:
+      baseUrl = "https://www.google.com/search?q="; // Fallback por si acaso
+  }
+
+
   for (let i = 0; i < numPestanas; i++) {
     const indiceVariacion = i % variaciones.length;
     const textoConVariacion = textoParaBuscar + variaciones[indiceVariacion];
-    const urlGoogle = "https://www.google.com/search?q=" + encodeURIComponent(textoConVariacion);
-
+    
+    // Codificar el texto para la URL
+    const finalUrl = baseUrl + encodeURIComponent(textoConVariacion);
+    
     const indiceIcono = i % iconosPersonalizados.length;
-    const nuevaPestana = window.open(urlGoogle, "_blank");
+    const nuevaPestana = window.open(finalUrl, "_blank"); // Usar finalUrl
 
     if (nuevaPestana) {
       try {
-        // Añadimos un pequeño retraso para intentar que el título se establezca,
-        // aunque sigue siendo una operación con restricciones de seguridad.
         setTimeout(() => {
           nuevaPestana.document.title = iconosPersonalizados[indiceIcono] + " - MaxiChat";
-        }, 100); // 100ms de retraso
+        }, 100);
       } catch (error) {
         console.error("Error al intentar cambiar el título:", error);
       }
