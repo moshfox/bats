@@ -167,11 +167,11 @@
 
   <div id="settingsContent" class="settings-content">
     <div class="input-group">
-      <label for="searchService">Servicio de Búsqueda:</label>
+      <label for="searchService">Servicio de Destino:</label>
       <select id="searchService">
-        <option value="google">Google (Predeterminado)</option>
+        <option value="google">Google (Búsqueda)</option>
         <option value="drive">Google Drive (Búsqueda)</option>
-        <option value="docs">Documentos de Google (Búsqueda)</option>
+        <option value="docs">Documentos de Google (Abrir por ID)</option>
       </select>
     </div>
 
@@ -201,7 +201,7 @@ const numPestanasInput = document.getElementById("numPestanasInput");
 const iconosInput = document.getElementById("iconosInput");
 const bgColorInput = document.getElementById("bgColorInput");
 const botonMax = document.getElementById("botonMax");
-const searchServiceSelect = document.getElementById("searchService"); // Nuevo
+const searchServiceSelect = document.getElementById("searchService");
 
 const settingsToggleBtn = document.querySelector(".settings-toggle");
 const settingsContentDiv = document.getElementById("settingsContent");
@@ -261,34 +261,45 @@ function abrirPestanas() {
     "", ".", "-", "3", "_", "a", "b", "1", "2", "!", "?", " ", "%20", "+", "&", "$", "#", "@", "*", "(", ")", "[", "]", "{", "}", ",", ";", ":", "'", '"', "/", "\\", "<", ">", "€", "£", "¥", "₪", "₹", "₩", "₱", "฿", "₫", "₡", "₵", "₲", "₸", "₺", "₴", "元", "円", "원"
   ];
 
-  // Determinar la URL base según el servicio seleccionado
+  // Determinar la URL base según el servicio seleccionado y construir la URL final
   const selectedService = searchServiceSelect.value;
-  let baseUrl = "";
-
-  switch (selectedService) {
-    case "google":
-      baseUrl = "https://www.google.com/search?q=";
-      break;
-    case "drive":
-      baseUrl = "https://drive.google.com/drive/search?q="; // Búsqueda en Google Drive
-      break;
-    case "docs":
-      baseUrl = "https://docs.google.com/document/u/0/?q="; // Búsqueda en Google Docs
-      break;
-    default:
-      baseUrl = "https://www.google.com/search?q="; // Fallback por si acaso
-  }
-
+  let finalUrl = "";
+  let encodedText = ""; // Variable para el texto codificado
 
   for (let i = 0; i < numPestanas; i++) {
     const indiceVariacion = i % variaciones.length;
     const textoConVariacion = textoParaBuscar + variaciones[indiceVariacion];
     
-    // Codificar el texto para la URL
-    const finalUrl = baseUrl + encodeURIComponent(textoConVariacion);
+    // El texto se codifica de forma diferente o no, según el servicio
+    // Para IDs, no siempre se debe usar encodeURIComponent en la totalidad,
+    // sino solo en las partes variables si es necesario.
+    encodedText = encodeURIComponent(textoConVariacion); 
+
+    switch (selectedService) {
+      case "google":
+        finalUrl = `https://www.google.com/search?q=${encodedText}`;
+        break;
+      case "drive":
+        finalUrl = `https://drive.google.com/drive/search?hl=es&q=${encodedText}`;
+        break;
+      case "docs":
+        // Para Google Docs, el texto del usuario + variación reemplaza el ID del documento
+        // Aquí NO se codifica todo el ID, solo la parte del ID si contiene caracteres especiales
+        // En este caso, el texto del usuario ya se considera el ID o parte del ID,
+        // por lo que `encodedText` es lo que se inserta directamente.
+        finalUrl = `https://docs.google.com/document/d/${textoConVariacion}/edit?tab=t.0`; 
+        // Nota: `textoConVariacion` se usa directamente aquí. Si los IDs de documentos
+        // pudiesen contener caracteres especiales que necesiten codificación URL,
+        // tendríamos que revisar si encodeURIComponent en la parte del ID es apropiado
+        // o si los IDs de GDocs ya están "limpios". Para la mayoría de los IDs reales,
+        // suelen ser caracteres seguros, por lo que `textoConVariacion` suele ser suficiente.
+        break;
+      default:
+        finalUrl = `https://www.google.com/search?q=${encodedText}`; // Fallback
+    }
     
     const indiceIcono = i % iconosPersonalizados.length;
-    const nuevaPestana = window.open(finalUrl, "_blank"); // Usar finalUrl
+    const nuevaPestana = window.open(finalUrl, "_blank");
 
     if (nuevaPestana) {
       try {
