@@ -226,6 +226,27 @@
     margin-bottom: 5px;
     line-height: 1.3;
   }
+  /* Estilo para el contenido dinámico de la consola */
+  #console-output {
+    height: 150px; /* Altura fija para que los mensajes se desplacen */
+    width: 100%;
+    overflow: hidden; /* Oculta lo que se sale del área */
+    margin-top: 20px;
+    border-left: 2px solid #00ff00; /* Borde tipo terminal */
+    padding-left: 10px;
+    box-sizing: border-box;
+  }
+  #console-output .line {
+    margin-bottom: 3px;
+    opacity: 0;
+    animation: fadeIn 0.3s forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
 
   .console-cursor {
     display: inline-block;
@@ -242,24 +263,6 @@
     to { opacity: 0; }
   }
 
-  /* Animación de texto que parece escribir */
-  .typing-animation {
-    overflow: hidden; /* Oculta el texto que aún no se "ha escrito" */
-    white-space: nowrap; /* Mantiene todo en una línea */
-    animation: typing 2s steps(40, end) forwards; /* Duración total, 40 pasos */
-    animation-delay: 0.5s; /* Retraso para que no empiece al instante */
-    animation-fill-mode: both; /* Mantiene el estado final de la animación */
-  }
-  /* Estilo para que el typing se vea en la consola */
-  .typing-animation p {
-    margin: 0;
-  }
-
-
-  @keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
-  }
 
   /* --- TEMAS VISUALES --- */
   .dark-theme {
@@ -449,15 +452,14 @@
 </div>
 
 <div id="hackerman-overlay">
-  <div class="console-line"><span style="color: #00ff00;">MaxiChat Pro v1.2a </span></div>
+  <div class="console-line"><span style="color: #00ff00;">MaxiChat Pro v1.2b - [STATUS: ACTIVE]</span></div>
   <div class="console-line"><span style="color: #00ff00;">Initializing system core... [OK]</span></div>
-  <div class="console-line"><span style="color: #00ff00;">Establishing secure connection... [DONE]</span></div>
-  <div class="console-line"><span style="color: #00ff00;">Scanning for browser vulnerabilities... [NONE FOUND]</span></div>
-  <div class="console-line"><span class="typing-animation"><p style="margin: 0; display: inline;">PREPARING TAB FLOOD PROTOCOL...</p></span></div>
   <div class="console-line">
-    <span style="color: #00ff00;">&gt; Injecting history entries...</span>
+    <span style="color: #00ff00;">&gt; Attempting connection to remote servers...</span>
     <span class="console-cursor"></span>
   </div>
+  <div id="console-output">
+    </div>
 </div>
 
 
@@ -467,22 +469,40 @@ const numPestanasInput = document.getElementById("numPestanasInput");
 const iconosInput = document.getElementById("iconosInput");
 const bgColorInput = document.getElementById("bgColorInput");
 const botonMax = document.getElementById("botonMax");
-const themeSelect = document.getElementById("themeSelect"); // Nuevo
-const progressCounter = document.getElementById("progress-counter"); // Nuevo
+const themeSelect = document.getElementById("themeSelect");
+const progressCounter = document.getElementById("progress-counter");
 
 const settingsToggleBtn = document.querySelector(".settings-toggle");
 const settingsContentDiv = document.getElementById("settingsContent");
 const serviceButtons = document.querySelectorAll(".service-button");
 
 const hackermanOverlay = document.getElementById("hackerman-overlay");
+const consoleOutput = document.getElementById("console-output"); // Nuevo: para los mensajes dinámicos
 
 let currentService = "google";
+let consoleInterval; // Para guardar el intervalo de los mensajes de la consola
+
+// --- MENSAJES PARA LA CONSOLA HACKERMAN ---
+const hackermanMessages = [
+  "ACCESS GRANTED: Root privileges acquired.",
+  "DECRYPTING ENCRYPTED SEGMENTS...",
+  "STATUS: Network traffic diverted.",
+  "PROCESSING REQUESTS: [200 OK]",
+  "INJECTING SESSION DATA...",
+  "BYPASSING SECURITY PROTOCOLS...",
+  "LOGGING ACTIVITY TO OBFUSCATION LAYER...",
+  "SYSTEM INTEGRITY CHECK: COMPLETE",
+  "SYNCHRONIZING HISTORY LOGS...",
+  "OPERATION SECURED. GOOD LUCK.",
+  "ANOMALIES DETECTED: [NONE]",
+  "PREPARING FINAL PAYLOAD DELIVERY..."
+];
+
 
 // --- INICIALIZACIÓN Y EVENT LISTENERS ---
-// Aplicar el tema predeterminado al cargar
 document.addEventListener('DOMContentLoaded', (event) => {
-    applyTheme(themeSelect.value); // Aplica el tema seleccionado por defecto
-    document.body.style.backgroundColor = bgColorInput.value; // Establece el color de fondo
+    applyTheme(themeSelect.value);
+    document.body.style.backgroundColor = bgColorInput.value;
 });
 
 bgColorInput.addEventListener("input", function() {
@@ -509,20 +529,41 @@ function setService(service, clickedButton) {
   clickedButton.classList.add("active");
 }
 
-// --- FUNCIÓN PARA APLICAR TEMAS ---
 function applyTheme(theme) {
   document.body.classList.remove('default-theme', 'dark-theme', 'cyberpunk-theme');
   if (theme === 'default') {
-    document.body.classList.add('default-theme'); // Podrías tener un tema "default" si quieres
-    document.body.style.backgroundColor = bgColorInput.value; // Vuelve al color del input si es default
+    document.body.classList.add('default-theme');
+    document.body.style.backgroundColor = bgColorInput.value;
   } else {
     document.body.classList.add(theme + '-theme');
-    // Para temas que controlan el fondo, sobrescribe el input de color
-    // Quita el color del input si el tema lo controla
-    // Esto es un poco truculento, puedes decidir si el color picker sigue afectando
-    // el background si el tema está activo. Por ahora, el tema gana.
   }
 }
+
+// --- LÓGICA DE LA CONSOLA HACKERMAN DINÁMICA ---
+function startConsoleAnimation() {
+    consoleOutput.innerHTML = ''; // Limpiar mensajes anteriores
+    let messageIndex = 0;
+    
+    // Intervalo para añadir mensajes rápidamente
+    consoleInterval = setInterval(() => {
+        if (messageIndex >= hackermanMessages.length) {
+            messageIndex = 0; // Reiniciar o detener, según quieras
+        }
+        const message = hackermanMessages[messageIndex];
+        const lineDiv = document.createElement('div');
+        lineDiv.classList.add('line');
+        lineDiv.textContent = `> ${message}`;
+        consoleOutput.appendChild(lineDiv);
+        consoleOutput.scrollTop = consoleOutput.scrollHeight; // Desplazar al final
+        messageIndex++;
+    }, 200); // Cada 200ms añade un nuevo mensaje
+}
+
+function stopConsoleAnimation() {
+    clearInterval(consoleInterval);
+    consoleOutput.innerHTML = ''; // Limpiar la consola al terminar
+}
+
 
 // --- FUNCIÓN PRINCIPAL DE APERTURA DE PESTAÑAS ---
 async function abrirPestanas() {
@@ -550,18 +591,20 @@ async function abrirPestanas() {
   botonMax.disabled = true;
   progressCounter.textContent = ""; // Limpia el contador antes de empezar
 
-  // 1. Mostrar la animación Hackerman
+  // 1. Mostrar la animación Hackerman y empezar los mensajes dinámicos
   hackermanOverlay.classList.add('active');
+  startConsoleAnimation(); // Inicia la animación de mensajes
 
   const animDuration = 2000; // 2 segundos para la animación
 
   // Esperar a que la animación de Hackerman termine
   await new Promise(resolve => setTimeout(resolve, animDuration));
 
-  // Ocultar la animación HACKERMAN inmediatamente después de los 2 segundos
+  // Ocultar la animación HACKERMAN y detener los mensajes inmediatamente después de los 2 segundos
   hackermanOverlay.classList.remove('active');
+  stopConsoleAnimation(); // Detiene y limpia la animación de mensajes
 
-  // --- Comienza la apertura de pestañas y monitoreo ---
+  // --- Comienza la apertura de pestañas a la velocidad original ---
   const iconosPersonalizados = iconosInput.value.split(',').map(icon => icon.trim()).filter(icon => icon.length > 0);
   const finalIconos = iconosPersonalizados.length === 0 ? ["✨", "🔥", "🚀", "💡", "🌟"] : iconosPersonalizados;
 
@@ -569,11 +612,7 @@ async function abrirPestanas() {
     "", ".", "-", "3", "_", "a", "b", "1", "2", "!", "?", " ", "%20", "+", "&", "$", "#", "@", "*", "(", ")", "[", "]", "{", "}", ",", ";", ":", "'", '"', "/", "\\", "<", ">", "€", "£", "¥", "₪", "₹", "₩", "₱", "฿", "₫", "₡", "₵", "₲", "₸", "₺", "₴", "元", "円", "원"
   ];
 
-  // Variables para la simulación de progreso
-  let openedCount = 0;
-  // Puedes ajustar este delay si quieres que la apertura sea más lenta y visible en el contador
-  const openingDelayPerTab = 5; // ms entre cada pestaña abierta (puedes subirlo a 10, 20, etc.)
-
+  // La apertura de pestañas ya no espera entre sí
   for (let i = 0; i < numPestanas; i++) {
     const indiceVariacion = i % variaciones.length;
     const textoConVariacion = textoParaBuscar + variaciones[indiceVariacion];
@@ -596,7 +635,7 @@ async function abrirPestanas() {
     }
     
     const indiceIcono = i % finalIconos.length;
-    const nuevaPestana = window.open(finalUrl, "_blank", "noopener,noreferrer"); // Añadimos seguridad
+    const nuevaPestana = window.open(finalUrl, "_blank", "noopener,noreferrer");
 
     if (nuevaPestana) {
       try {
@@ -608,11 +647,8 @@ async function abrirPestanas() {
         console.error("Error al intentar cambiar el título:", error);
       }
     }
-    openedCount++;
-    progressCounter.textContent = `Pestañas Abiertas: ${openedCount} de ${numPestanas}`;
-
-    // Pequeño retraso entre la apertura de cada pestaña para que el contador se actualice visiblemente
-    await new Promise(resolve => setTimeout(resolve, openingDelayPerTab));
+    // Actualizar el contador aquí, lo hará muy rápido
+    progressCounter.textContent = `Pestañas Abiertas: ${i + 1} de ${numPestanas}`;
   }
 
   // Finalizar
