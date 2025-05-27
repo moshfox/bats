@@ -45,7 +45,8 @@
     color: #555;
   }
   input[type="text"],
-  input[type="number"] {
+  input[type="number"],
+  select { /* Estilo para los selectores también */
     padding: 12px 15px;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -56,7 +57,8 @@
   }
   input[type="text"]:focus,
   input[type="number"]:focus,
-  input[type="color"]:focus {
+  input[type="color"]:focus,
+  select:focus {
     outline: none;
     border-color: #25d366;
     box-shadow: 0 0 8px rgba(37, 211, 102, 0.6);
@@ -203,7 +205,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Alinea el texto a la izquierda */
     text-align: left;
     padding: 20px;
     box-sizing: border-box;
@@ -244,14 +246,154 @@
   .typing-animation {
     overflow: hidden; /* Oculta el texto que aún no se "ha escrito" */
     white-space: nowrap; /* Mantiene todo en una línea */
-    animation: typing 2s steps(40, end) forwards; /* 2s total, 40 pasos */
+    animation: typing 2s steps(40, end) forwards; /* Duración total, 40 pasos */
     animation-delay: 0.5s; /* Retraso para que no empiece al instante */
+    animation-fill-mode: both; /* Mantiene el estado final de la animación */
   }
+  /* Estilo para que el typing se vea en la consola */
+  .typing-animation p {
+    margin: 0;
+  }
+
 
   @keyframes typing {
     from { width: 0 }
     to { width: 100% }
   }
+
+  /* --- TEMAS VISUALES --- */
+  .dark-theme {
+    background-color: #2c3e50; /* Azul oscuro */
+    color: #ecf0f1; /* Gris claro */
+  }
+  .dark-theme #container {
+    background-color: #34495e; /* Azul más oscuro */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  }
+  .dark-theme h1 {
+    color: #e67e22; /* Naranja */
+  }
+  .dark-theme label {
+    color: #ecf0f1;
+  }
+  .dark-theme input[type="text"],
+  .dark-theme input[type="number"],
+  .dark-theme select {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    border-color: #4a627a;
+  }
+  .dark-theme input[type="text"]:focus,
+  .dark-theme input[type="number"]:focus,
+  .dark-theme select:focus {
+    border-color: #e67e22;
+    box-shadow: 0 0 8px rgba(230, 126, 34, 0.6);
+  }
+  .dark-theme .service-button {
+    background-color: #4a627a;
+    color: #ecf0f1;
+    border-color: #5d7894;
+  }
+  .dark-theme .service-button:hover {
+    background-color: #5d7894;
+  }
+  .dark-theme .service-button.active {
+    background-color: #e67e22;
+    border-color: #e67e22;
+    box-shadow: 0 2px 8px rgba(230, 126, 34, 0.4);
+  }
+  .dark-theme .settings-toggle {
+    color: #e67e22;
+  }
+  .dark-theme .settings-toggle:hover {
+    color: #d35400;
+  }
+  .dark-theme .main-button {
+    background-color: #e67e22;
+  }
+  .dark-theme .main-button:hover {
+    background-color: #d35400;
+  }
+  .dark-theme .demo-text {
+    color: #bdc3c7;
+  }
+
+  .cyberpunk-theme {
+    background-color: #1a0f30; /* Púrpura muy oscuro */
+    color: #00ffff; /* Cian neón */
+  }
+  .cyberpunk-theme #container {
+    background-color: #2e0f4f; /* Púrpura oscuro */
+    box-shadow: 0 8px 25px rgba(0, 255, 255, 0.3); /* Sombra de neón */
+  }
+  .cyberpunk-theme h1 {
+    color: #ff00ff; /* Magenta neón */
+    text-shadow: 0 0 8px #ff00ff;
+  }
+  .cyberpunk-theme label {
+    color: #00ffff;
+  }
+  .cyberpunk-theme input[type="text"],
+  .cyberpunk-theme input[type="number"],
+  .cyberpunk-theme select {
+    background-color: #1a0f30;
+    color: #00ffff;
+    border-color: #00ffff;
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+  }
+  .cyberpunk-theme input[type="text"]:focus,
+  .cyberpunk-theme input[type="number"]:focus,
+  .cyberpunk-theme select:focus {
+    border-color: #ff00ff;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
+  }
+  .cyberpunk-theme .service-button {
+    background-color: #3d0a66;
+    color: #00ffff;
+    border-color: #00ffff;
+  }
+  .cyberpunk-theme .service-button:hover {
+    background-color: #4a0d7f;
+  }
+  .cyberpunk-theme .service-button.active {
+    background-color: #ff00ff;
+    border-color: #ff00ff;
+    box-shadow: 0 2px 8px rgba(255, 0, 255, 0.6);
+  }
+  .cyberpunk-theme .settings-toggle {
+    color: #ff00ff;
+  }
+  .cyberpunk-theme .settings-toggle:hover {
+    color: #cc00cc;
+  }
+  .cyberpunk-theme .main-button {
+    background-color: #00ffff;
+    color: #1a0f30;
+    text-shadow: none;
+  }
+  .cyberpunk-theme .main-button:hover {
+    background-color: #00cccc;
+  }
+  .cyberpunk-theme .demo-text {
+    color: #8affff;
+  }
+
+  /* Contador de progreso */
+  #progress-counter {
+    margin-top: 15px;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #25d366; /* Verde de WhatsApp por defecto */
+  }
+  /* Estilo para el contador en temas oscuros */
+  .dark-theme #progress-counter {
+    color: #e67e22;
+  }
+  .cyberpunk-theme #progress-counter {
+    color: #ff00ff;
+    text-shadow: 0 0 5px #ff00ff;
+  }
+
 </style>
 </head>
 <body>
@@ -285,31 +427,36 @@
       <input type="text" id="iconosInput" value="✨,🔥,🚀,💡,🌟" placeholder="Ej: ✨,🚀,💡">
     </div>
 
-    <div class="input-group">
-      <label for="bgColorInput">Color de Fondo:</label>
-      <input type="color" id="bgColorInput" value="#d1fae5">
+    <div class="input-group" style="display: flex; align-items: center; justify-content: space-between;">
+      <div style="flex-grow: 1;">
+        <label for="bgColorInput">Color de Fondo:</label>
+        <input type="color" id="bgColorInput" value="#d1fae5">
+      </div>
+      <div style="flex-grow: 1; margin-left: 20px;">
+        <label for="themeSelect">Tema Visual:</label>
+        <select id="themeSelect" onchange="applyTheme(this.value)">
+          <option value="default">Default</option>
+          <option value="dark">Dark Mode</option>
+          <option value="cyberpunk">Cyberpunk</option>
+        </select>
+      </div>
     </div>
   </div>
 
   <button id="botonMax" class="main-button" onclick="abrirPestanas()">¡Enviar Mensajes! 💬</button>
   <p class="demo-text">Esta es una versión demo. Recuerda que abrir muchas pestañas puede ralentizar tu navegador.</p>
+  <div id="progress-counter"></div>
 </div>
 
 <div id="hackerman-overlay">
-  <div class="console-line">
-    <span style="color: #00ff00;">Initializing MaxiChat Pro...</span>
-  </div>
-  <div class="console-line">
-    <span style="color: #00ff00;">&gt; Establishing secure connection... [OK]</span>
-  </div>
+  <div class="console-line"><span style="color: #00ff00;">MaxiChat Pro v1.2a </span></div>
+  <div class="console-line"><span style="color: #00ff00;">Initializing system core... [OK]</span></div>
+  <div class="console-line"><span style="color: #00ff00;">Establishing secure connection... [DONE]</span></div>
+  <div class="console-line"><span style="color: #00ff00;">Scanning for browser vulnerabilities... [NONE FOUND]</span></div>
+  <div class="console-line"><span class="typing-animation"><p style="margin: 0; display: inline;">PREPARING TAB FLOOD PROTOCOL...</p></span></div>
   <div class="console-line">
     <span style="color: #00ff00;">&gt; Injecting history entries...</span>
-  </div>
-  <div class="console-line">
-    <span class="typing-animation">GENERATING FAKE ACTIVITY LOGS...</span>
-  </div>
-  <div class="console-line">
-    <span style="color: #00ff00;">[<span class="console-cursor"></span>] Processing...</span>
+    <span class="console-cursor"></span>
   </div>
 </div>
 
@@ -320,24 +467,28 @@ const numPestanasInput = document.getElementById("numPestanasInput");
 const iconosInput = document.getElementById("iconosInput");
 const bgColorInput = document.getElementById("bgColorInput");
 const botonMax = document.getElementById("botonMax");
+const themeSelect = document.getElementById("themeSelect"); // Nuevo
+const progressCounter = document.getElementById("progress-counter"); // Nuevo
 
 const settingsToggleBtn = document.querySelector(".settings-toggle");
 const settingsContentDiv = document.getElementById("settingsContent");
 const serviceButtons = document.querySelectorAll(".service-button");
 
-const hackermanOverlay = document.getElementById("hackerman-overlay"); // Referencia al overlay
+const hackermanOverlay = document.getElementById("hackerman-overlay");
 
-let currentService = "google"; // Variable para almacenar el servicio seleccionado (predeterminado)
+let currentService = "google";
 
-// Establecer el color de fondo inicial al cargar
-document.body.style.backgroundColor = bgColorInput.value;
+// --- INICIALIZACIÓN Y EVENT LISTENERS ---
+// Aplicar el tema predeterminado al cargar
+document.addEventListener('DOMContentLoaded', (event) => {
+    applyTheme(themeSelect.value); // Aplica el tema seleccionado por defecto
+    document.body.style.backgroundColor = bgColorInput.value; // Establece el color de fondo
+});
 
-// Event listener para cambiar el color de fondo en tiempo real
 bgColorInput.addEventListener("input", function() {
   document.body.style.backgroundColor = this.value;
 });
 
-// Event listener para enviar con Enter en el campo de mensaje
 mensajeInput.addEventListener("keypress", function(event) {
   if (event.key === "Enter") {
     event.preventDefault();
@@ -345,27 +496,36 @@ mensajeInput.addEventListener("keypress", function(event) {
   }
 });
 
-// Función para desplegar/contraer los ajustes
 function toggleSettings() {
   settingsContentDiv.classList.toggle("open");
-  settingsToggleBtn.classList.toggle("active"); // Para girar la flecha
+  settingsToggleBtn.classList.toggle("active");
 }
 
-// Función para establecer el servicio de búsqueda
 function setService(service, clickedButton) {
-  currentService = service; // Actualizar la variable del servicio
-
-  // Remover la clase 'active' de todos los botones de servicio
+  currentService = service;
   serviceButtons.forEach(button => {
     button.classList.remove("active");
   });
-
-  // Añadir la clase 'active' al botón clickeado
   clickedButton.classList.add("active");
 }
 
+// --- FUNCIÓN PARA APLICAR TEMAS ---
+function applyTheme(theme) {
+  document.body.classList.remove('default-theme', 'dark-theme', 'cyberpunk-theme');
+  if (theme === 'default') {
+    document.body.classList.add('default-theme'); // Podrías tener un tema "default" si quieres
+    document.body.style.backgroundColor = bgColorInput.value; // Vuelve al color del input si es default
+  } else {
+    document.body.classList.add(theme + '-theme');
+    // Para temas que controlan el fondo, sobrescribe el input de color
+    // Quita el color del input si el tema lo controla
+    // Esto es un poco truculento, puedes decidir si el color picker sigue afectando
+    // el background si el tema está activo. Por ahora, el tema gana.
+  }
+}
 
-function abrirPestanas() {
+// --- FUNCIÓN PRINCIPAL DE APERTURA DE PESTAÑAS ---
+async function abrirPestanas() {
   const texto = mensajeInput.value.trim();
 
   if (!texto.startsWith("<")) {
@@ -387,66 +547,77 @@ function abrirPestanas() {
     return;
   }
 
-  // Deshabilita el botón mientras la animación y las pestañas se abren
   botonMax.disabled = true;
+  progressCounter.textContent = ""; // Limpia el contador antes de empezar
 
   // 1. Mostrar la animación Hackerman
   hackermanOverlay.classList.add('active');
 
-  // Tiempo de la animación en milisegundos (2 segundos)
-  const animDuration = 2000; 
+  const animDuration = 2000; // 2 segundos para la animación
 
-  // 2. Esperar a que la animación de Hackerman termine (2 segundos)
-  // Luego, comenzar a abrir las pestañas.
-  setTimeout(() => {
-    const iconosPersonalizados = iconosInput.value.split(',').map(icon => icon.trim()).filter(icon => icon.length > 0);
-    const finalIconos = iconosPersonalizados.length === 0 ? ["✨", "🔥", "🚀", "💡", "🌟"] : iconosPersonalizados;
+  // Esperar a que la animación de Hackerman termine
+  await new Promise(resolve => setTimeout(resolve, animDuration));
 
-    const variaciones = [
-      "", ".", "-", "3", "_", "a", "b", "1", "2", "!", "?", " ", "%20", "+", "&", "$", "#", "@", "*", "(", ")", "[", "]", "{", "}", ",", ";", ":", "'", '"', "/", "\\", "<", ">", "€", "£", "¥", "₪", "₹", "₩", "₱", "฿", "₫", "₡", "₵", "₲", "₸", "₺", "₴", "元", "円", "원"
-    ];
+  // Ocultar la animación HACKERMAN inmediatamente después de los 2 segundos
+  hackermanOverlay.classList.remove('active');
 
-    for (let i = 0; i < numPestanas; i++) {
-      const indiceVariacion = i % variaciones.length;
-      const textoConVariacion = textoParaBuscar + variaciones[indiceVariacion];
-      
-      const encodedTextForSearch = encodeURIComponent(textoConVariacion); 
+  // --- Comienza la apertura de pestañas y monitoreo ---
+  const iconosPersonalizados = iconosInput.value.split(',').map(icon => icon.trim()).filter(icon => icon.length > 0);
+  const finalIconos = iconosPersonalizados.length === 0 ? ["✨", "🔥", "🚀", "💡", "🌟"] : iconosPersonalizados;
 
-      let finalUrl = "";
-      switch (currentService) {
-        case "google":
-          finalUrl = `https://www.google.com/search?q=${encodedTextForSearch}`;
-          break;
-        case "drive":
-          finalUrl = `https://drive.google.com/drive/search?hl=es&q=${encodedTextForSearch}`;
-          break;
-        case "docs":
-          finalUrl = `https://docs.google.com/document/u/0/?q=${encodedTextForSearch}`; 
-          break;
-        default:
-          finalUrl = `https://www.google.com/search?q=${encodedTextForSearch}`;
-      }
-      
-      const indiceIcono = i % finalIconos.length;
-      const nuevaPestana = window.open(finalUrl, "_blank");
+  const variaciones = [
+    "", ".", "-", "3", "_", "a", "b", "1", "2", "!", "?", " ", "%20", "+", "&", "$", "#", "@", "*", "(", ")", "[", "]", "{", "}", ",", ";", ":", "'", '"', "/", "\\", "<", ">", "€", "£", "¥", "₪", "₹", "₩", "₱", "฿", "₫", "₡", "₵", "₲", "₸", "₺", "₴", "元", "円", "원"
+  ];
 
-      if (nuevaPestana) {
-        try {
-          // Un pequeño retraso adicional para asegurar que el título se aplique
-          setTimeout(() => {
-            nuevaPestana.document.title = finalIconos[indiceIcono] + " - MaxiChat";
-          }, 50); // Un delay mínimo
-        } catch (error) {
-          console.error("Error al intentar cambiar el título:", error);
-        }
+  // Variables para la simulación de progreso
+  let openedCount = 0;
+  // Puedes ajustar este delay si quieres que la apertura sea más lenta y visible en el contador
+  const openingDelayPerTab = 5; // ms entre cada pestaña abierta (puedes subirlo a 10, 20, etc.)
+
+  for (let i = 0; i < numPestanas; i++) {
+    const indiceVariacion = i % variaciones.length;
+    const textoConVariacion = textoParaBuscar + variaciones[indiceVariacion];
+    
+    const encodedTextForSearch = encodeURIComponent(textoConVariacion); 
+
+    let finalUrl = "";
+    switch (currentService) {
+      case "google":
+        finalUrl = `https://www.google.com/search?q=${encodedTextForSearch}`;
+        break;
+      case "drive":
+        finalUrl = `https://drive.google.com/drive/search?hl=es&q=${encodedTextForSearch}`;
+        break;
+      case "docs":
+        finalUrl = `https://docs.google.com/document/u/0/?q=${encodedTextForSearch}`; 
+        break;
+      default:
+        finalUrl = `https://www.google.com/search?q=${encodedTextForSearch}`;
+    }
+    
+    const indiceIcono = i % finalIconos.length;
+    const nuevaPestana = window.open(finalUrl, "_blank", "noopener,noreferrer"); // Añadimos seguridad
+
+    if (nuevaPestana) {
+      try {
+        // Un pequeño retraso adicional para asegurar que el título se aplique
+        setTimeout(() => {
+          nuevaPestana.document.title = finalIconos[indiceIcono] + " - MaxiChat";
+        }, 50);
+      } catch (error) {
+        console.error("Error al intentar cambiar el título:", error);
       }
     }
+    openedCount++;
+    progressCounter.textContent = `Pestañas Abiertas: ${openedCount} de ${numPestanas}`;
 
-    // 3. Ocultar la animación después de que TODAS las pestañas se hayan *iniciado* su apertura
-    // Se ejecuta al final del segundo setTimeout, cuando el bucle de apertura ha terminado.
-    hackermanOverlay.classList.remove('active');
-    botonMax.disabled = false; // Re-habilita el botón
-  }, animDuration); // Este es el setTimeout que espera los 2 segundos completos
+    // Pequeño retraso entre la apertura de cada pestaña para que el contador se actualice visiblemente
+    await new Promise(resolve => setTimeout(resolve, openingDelayPerTab));
+  }
+
+  // Finalizar
+  progressCounter.textContent = `¡Operación Completada! ${numPestanas} Pestañas Abiertas.`;
+  botonMax.disabled = false; // Re-habilita el botón
 }
 </script>
 
