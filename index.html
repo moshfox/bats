@@ -13,6 +13,7 @@
     margin: 0;
     color: #333;
     transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+    overflow: hidden; /* Evita scroll si la superposición es 100% */
   }
   #container {
     background-color: #fff;
@@ -24,6 +25,8 @@
     max-width: 500px;
     box-sizing: border-box;
     overflow: hidden;
+    position: relative; /* Para el posicionamiento del loading */
+    z-index: 10; /* Asegura que esté por encima de la superposición si hay otros elementos */
   }
   h1 {
     color: #25d366; /* Verde principal de WhatsApp */
@@ -185,6 +188,70 @@
     border-color: #25d366;
     box-shadow: 0 2px 8px rgba(37, 211, 102, 0.4); /* Sombra sutil para activo */
   }
+
+  /* --- ESTILOS HACKERMAN OVERLAY --- */
+  #hackerman-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95); /* Fondo casi negro */
+    color: #00ff00; /* Texto verde brillante */
+    font-family: 'Consolas', 'Monaco', monospace; /* Fuente de terminal */
+    font-size: 1.2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    padding: 20px;
+    box-sizing: border-box;
+    z-index: 1000; /* Asegura que esté por encima de todo */
+    opacity: 0; /* Empieza invisible */
+    visibility: hidden; /* Empieza oculto para no afectar el flujo */
+    transition: opacity 0.3s ease; /* Transición suave para aparecer/desaparecer */
+  }
+
+  #hackerman-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .console-line {
+    width: 100%;
+    white-space: pre-wrap; /* Mantiene saltos de línea */
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+
+  .console-cursor {
+    display: inline-block;
+    width: 0.7em;
+    height: 1.2em;
+    background-color: #00ff00;
+    margin-left: 5px;
+    vertical-align: middle;
+    animation: blink-cursor 0.75s infinite alternate;
+  }
+
+  @keyframes blink-cursor {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  /* Animación de texto que parece escribir */
+  .typing-animation {
+    overflow: hidden; /* Oculta el texto que aún no se "ha escrito" */
+    white-space: nowrap; /* Mantiene todo en una línea */
+    animation: typing 2s steps(40, end) forwards; /* 2s total, 40 pasos */
+    animation-delay: 0.5s; /* Retraso para que no empiece al instante */
+  }
+
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
 </style>
 </head>
 <body>
@@ -228,6 +295,25 @@
   <p class="demo-text">Esta es una versión demo. Recuerda que abrir muchas pestañas puede ralentizar tu navegador.</p>
 </div>
 
+<div id="hackerman-overlay">
+  <div class="console-line">
+    <span style="color: #00ff00;">Initializing MaxiChat Pro...</span>
+  </div>
+  <div class="console-line">
+    <span style="color: #00ff00;">&gt; Establishing secure connection... [OK]</span>
+  </div>
+  <div class="console-line">
+    <span style="color: #00ff00;">&gt; Injecting history entries...</span>
+  </div>
+  <div class="console-line">
+    <span class="typing-animation">GENERATING FAKE ACTIVITY LOGS...</span>
+  </div>
+  <div class="console-line">
+    <span style="color: #00ff00;">[<span class="console-cursor"></span>] Processing...</span>
+  </div>
+</div>
+
+
 <script>
 const mensajeInput = document.getElementById("mensajeInput");
 const numPestanasInput = document.getElementById("numPestanasInput");
@@ -238,6 +324,8 @@ const botonMax = document.getElementById("botonMax");
 const settingsToggleBtn = document.querySelector(".settings-toggle");
 const settingsContentDiv = document.getElementById("settingsContent");
 const serviceButtons = document.querySelectorAll(".service-button");
+
+const hackermanOverlay = document.getElementById("hackerman-overlay"); // Referencia al overlay
 
 let currentService = "google"; // Variable para almacenar el servicio seleccionado (predeterminado)
 
@@ -278,77 +366,89 @@ function setService(service, clickedButton) {
 
 
 function abrirPestanas() {
-  const texto = mensajeInput.value.trim(); // Usar .trim() para limpiar espacios al inicio/fin
+  const texto = mensajeInput.value.trim();
 
-  // ** VALIDACIÓN CORREGIDA **
   if (!texto.startsWith("<")) {
     alert("Para activar la función demo, tu mensaje debe comenzar con el símbolo '<'.");
-    return; // Detiene la ejecución si no empieza con '<'
-  }
-
-  // Comprueba si solo hay '<' o nada más después de recortar
-  if (texto.length <= 1) { 
-    alert("Por favor, escribe un mensaje válido para la demo (debe tener algo después de '<').");
-    return; // Detiene la ejecución si no hay texto útil
-  }
-
-  const textoParaBuscar = texto.substring(1); // Elimina el '<' para la búsqueda
-
-  // Obtener el número de pestañas y validar
-  let numPestanas = parseInt(numPestanasInput.value);
-  if (isNaN(numPestanas) || numPestanas < 5 || numPestanas > 1000) {
-    alert("Por favor, ingresa un número de pestañas entre 5 y 1000.");
-    numPestanasInput.value = 500; // Restablecer al valor predeterminado si es inválido
     return;
   }
 
-  // Obtener los símbolos personalizados o usar los predeterminados
-  let iconosPersonalizados = iconosInput.value.split(',').map(icon => icon.trim()).filter(icon => icon.length > 0);
-  if (iconosPersonalizados.length === 0) {
-    iconosPersonalizados = ["✨", "🔥", "🚀", "💡", "🌟"]; // Iconos predeterminados
+  if (texto.length <= 1) { 
+    alert("Por favor, escribe un mensaje válido para la demo (debe tener algo después de '<').");
+    return;
   }
 
-  const variaciones = [
-    "", ".", "-", "3", "_", "a", "b", "1", "2", "!", "?", " ", "%20", "+", "&", "$", "#", "@", "*", "(", ")", "[", "]", "{", "}", ",", ";", ":", "'", '"', "/", "\\", "<", ">", "€", "£", "¥", "₪", "₹", "₩", "₱", "฿", "₫", "₡", "₵", "₲", "₸", "₺", "₴", "元", "円", "원"
-  ];
+  const textoParaBuscar = texto.substring(1);
 
-  let finalUrl = "";
-  
-  for (let i = 0; i < numPestanas; i++) {
-    const indiceVariacion = i % variaciones.length;
-    const textoConVariacion = textoParaBuscar + variaciones[indiceVariacion];
-    
-    // IMPORTANTE: encodeURIComponent debe aplicarse para las URLs de búsqueda
-    const encodedTextForSearch = encodeURIComponent(textoConVariacion); 
+  let numPestanas = parseInt(numPestanasInput.value);
+  if (isNaN(numPestanas) || numPestanas < 5 || numPestanas > 1000) {
+    alert("Por favor, ingresa un número de pestañas entre 5 y 1000.");
+    numPestanasInput.value = 500;
+    return;
+  }
 
-    switch (currentService) {
-      case "google":
-        finalUrl = `https://www.google.com/search?q=${encodedTextForSearch}`;
-        break;
-      case "drive":
-        finalUrl = `https://drive.google.com/drive/search?hl=es&q=${encodedTextForSearch}`;
-        break;
-      case "docs":
-        // CAMBIO AQUÍ: Ahora es una URL de búsqueda para Google Docs
-        finalUrl = `https://docs.google.com/document/u/0/?q=${encodedTextForSearch}`; 
-        break;
-      default:
-        finalUrl = `https://www.google.com/search?q=${encodedTextForSearch}`; // Fallback
-    }
-    
-    const indiceIcono = i % iconosPersonalizados.length;
-    const nuevaPestana = window.open(finalUrl, "_blank");
+  // Deshabilita el botón mientras la animación y las pestañas se abren
+  botonMax.disabled = true;
 
-    if (nuevaPestana) {
-      try {
-        setTimeout(() => {
-          nuevaPestana.document.title = iconosPersonalizados[indiceIcono] + " - MaxiChat";
-        }, 100);
-      } catch (error) {
-        console.error("Error al intentar cambiar el título:", error);
+  // 1. Mostrar la animación Hackerman
+  hackermanOverlay.classList.add('active');
+
+  // Tiempo de la animación en milisegundos (2 segundos)
+  const animDuration = 2000;
+
+  // 2. Iniciar la apertura de pestañas *después de un breve retraso*
+  // Esto permite que la animación visual se vea antes de que el navegador empiece
+  // a abrir las pestañas, lo cual puede ser un poco pesado.
+  setTimeout(() => {
+    const iconosPersonalizados = iconosInput.value.split(',').map(icon => icon.trim()).filter(icon => icon.length > 0);
+    const finalIconos = iconosPersonalizados.length === 0 ? ["✨", "🔥", "🚀", "💡", "🌟"] : iconosPersonalizados;
+
+    const variaciones = [
+      "", ".", "-", "3", "_", "a", "b", "1", "2", "!", "?", " ", "%20", "+", "&", "$", "#", "@", "*", "(", ")", "[", "]", "{", "}", ",", ";", ":", "'", '"', "/", "\\", "<", ">", "€", "£", "¥", "₪", "₹", "₩", "₱", "฿", "₫", "₡", "₵", "₲", "₸", "₺", "₴", "元", "円", "원"
+    ];
+
+    for (let i = 0; i < numPestanas; i++) {
+      const indiceVariacion = i % variaciones.length;
+      const textoConVariacion = textoParaBuscar + variaciones[indiceVariacion];
+      
+      const encodedTextForSearch = encodeURIComponent(textoConVariacion); 
+
+      let finalUrl = "";
+      switch (currentService) {
+        case "google":
+          finalUrl = `https://www.google.com/search?q=${encodedTextForSearch}`;
+          break;
+        case "drive":
+          finalUrl = `https://drive.google.com/drive/search?hl=es&q=${encodedTextForSearch}`;
+          break;
+        case "docs":
+          finalUrl = `https://docs.google.com/document/u/0/?q=${encodedTextForSearch}`; 
+          break;
+        default:
+          finalUrl = `https://www.google.com/search?q=${encodedTextForSearch}`;
+      }
+      
+      const indiceIcono = i % finalIconos.length;
+      const nuevaPestana = window.open(finalUrl, "_blank");
+
+      if (nuevaPestana) {
+        try {
+          // Un pequeño retraso adicional para asegurar que el título se aplique
+          setTimeout(() => {
+            nuevaPestana.document.title = finalIconos[indiceIcono] + " - MaxiChat";
+          }, 50); // Un delay mínimo
+        } catch (error) {
+          console.error("Error al intentar cambiar el título:", error);
+        }
       }
     }
-  }
+  }, 100); // Pequeño retraso antes de empezar a abrir pestañas (100ms)
+
+  // 3. Ocultar la animación después de su duración total y re-habilitar el botón
+  setTimeout(() => {
+    hackermanOverlay.classList.remove('active');
+    botonMax.disabled = false; // Re-habilita el botón
+  }, animDuration); // La animación durará los 2 segundos definidos
 }
 </script>
 
