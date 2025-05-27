@@ -1,99 +1,229 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>MaxiChat Portal</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background-color: #e0f7fa;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    #container {
-      background-color: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.2);
-      text-align: center;
-    }
-    input, button {
-      padding: 12px;
-      font-size: 16px;
-      margin: 10px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    button {
-      background-color: #25d366;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    button:hover {
-      background-color: #128c7e;
-    }
-  </style>
+<title>¡MaxiChat Pro! 🚀</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #d1fae5; /* Predeterminado: Verde claro de WhatsApp */
+    margin: 0;
+    color: #333;
+    transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
+  }
+  #container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+    text-align: center;
+    width: 90%;
+    max-width: 500px; /* Un poco más ancho para los ajustes */
+    box-sizing: border-box;
+  }
+  h1 {
+    color: #25d366; /* Verde principal de WhatsApp */
+    margin-bottom: 25px;
+    font-size: 2.2em; /* Título un poco más grande */
+  }
+  .input-group {
+    margin-bottom: 20px;
+    text-align: left; /* Alinea etiquetas a la izquierda */
+  }
+  .input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+  }
+  input[type="text"],
+  input[type="number"] {
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    width: calc(100% - 30px);
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  input[type="text"]:focus,
+  input[type="number"]:focus,
+  input[type="color"]:focus {
+    outline: none;
+    border-color: #25d366;
+    box-shadow: 0 0 8px rgba(37, 211, 102, 0.6);
+  }
+  input[type="number"] {
+    width: 100px; /* Ancho fijo para el número de pestañas */
+    text-align: center;
+  }
+  input[type="color"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%; /* Color picker circular */
+    cursor: pointer;
+    vertical-align: middle; /* Alinea con la etiqueta */
+    margin-left: 10px;
+    padding: 0;
+  }
+  input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+  input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 50%;
+  }
+  button {
+    padding: 15px 30px; /* Botón un poco más grande */
+    background-color: #25d366; /* Verde principal de WhatsApp */
+    color: white;
+    border: none;
+    border-radius: 10px; /* Bordes más redondeados */
+    cursor: pointer;
+    font-size: 19px; /* Fuente un poco más grande */
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+    width: 100%; /* Ocupa todo el ancho disponible */
+    margin-top: 30px; /* Más espacio arriba */
+  }
+  button:hover {
+    background-color: #128c7e; /* Verde más oscuro al pasar el ratón */
+    transform: translateY(-2px); /* Pequeño efecto de elevación */
+  }
+  button:active {
+    transform: translateY(0);
+  }
+  .demo-text {
+    color: #777;
+    font-size: 14px;
+    margin-top: 25px;
+  }
+  .settings-section {
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 1px solid #eee; /* Separador para los ajustes */
+  }
+  .settings-section h2 {
+    color: #25d366;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+  }
+</style>
 </head>
 <body>
 
 <div id="container">
-  <h1>¡MaxiChat! 🌟</h1>
-  <input type="text" id="inputTexto" placeholder="Empieza con < para activar...">
-  <button onclick="abrirDesdeOtraPestana()">Lanzar desde otra pestaña</button>
+  <h1>¡MaxiChat Pro! 🚀</h1>
+
+  <div class="input-group">
+    <label for="mensajeInput">Mensaje a Enviar:</label>
+    <input type="text" id="mensajeInput" placeholder="Escribe tu mensaje (¡comienza con '<' para activar la demo!)">
+  </div>
+
+  <div class="settings-section">
+    <h2>Ajustes Avanzados</h2>
+
+    <div class="input-group">
+      <label for="numPestanasInput">Número de Pestañas (5-1000):</label>
+      <input type="number" id="numPestanasInput" value="500" min="5" max="1000">
+    </div>
+
+    <div class="input-group">
+      <label for="iconosInput">Símbolos de las Pestañas (separados por coma):</label>
+      <input type="text" id="iconosInput" value="✨,🔥,🚀,💡,🌟" placeholder="Ej: ✨,🚀,💡">
+    </div>
+
+    <div class="input-group">
+      <label for="bgColorInput">Color de Fondo:</label>
+      <input type="color" id="bgColorInput" value="#d1fae5">
+    </div>
+  </div>
+
+  <button id="botonMax" onclick="abrirPestanas()">¡Enviar Mensajes! 💬</button>
+  <p class="demo-text">Esta es una versión demo. Recuerda que abrir muchas pestañas puede ralentizar tu navegador.</p>
 </div>
 
 <script>
-function abrirDesdeOtraPestana() {
-  const texto = document.getElementById("inputTexto").value;
-  if (!texto.startsWith("<") || texto.length <= 1) {
-    alert("Tu mensaje debe empezar con '<' y contener texto.");
+const mensajeInput = document.getElementById("mensajeInput");
+const numPestanasInput = document.getElementById("numPestanasInput");
+const iconosInput = document.getElementById("iconosInput");
+const bgColorInput = document.getElementById("bgColorInput");
+const botonMax = document.getElementById("botonMax");
+
+// Establecer el color de fondo inicial al cargar
+document.body.style.backgroundColor = bgColorInput.value;
+
+// Event listener para cambiar el color de fondo en tiempo real
+bgColorInput.addEventListener("input", function() {
+  document.body.style.backgroundColor = this.value;
+});
+
+// Event listener para enviar con Enter en el campo de mensaje
+mensajeInput.addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    botonMax.click();
+  }
+});
+
+function abrirPestanas() {
+  const texto = mensajeInput.value;
+  if (!texto.startsWith("<")) {
+    alert("¡Ups! Parece que esta función aún está en desarrollo. Asegúrate de que tu mensaje comience con '<' para probarla.");
     return;
   }
 
-  const mensaje = texto.substring(1);
-  const win = window.open("", "_blank");
-
-  if (!win) {
-    alert("Tu navegador ha bloqueado la nueva pestaña. Permite ventanas emergentes.");
+  if (texto.trim().length <= 1) {
+    alert("Por favor, escribe un mensaje válido (debe tener al menos un carácter después de '<') para enviar.");
     return;
   }
 
-  // Generar HTML dinámico con JS que abrirá las pestañas
-  const html = `
-    <!DOCTYPE html>
-    <html lang="es">
-    <head><title>MaxiChat Launcher</title></head>
-    <body style="font-family:sans-serif; text-align:center; background:#fff; padding-top:50px;">
-      <h2>Lanzando pestañas para: <span style="color:#25d366;">${mensaje}</span></h2>
-      <p>Esto puede tardar unos segundos. 🔄</p>
-      <script>
-        const base = ${JSON.stringify(mensaje)};
-        const variaciones = ["", ".", "-", "1", "2", "_", "a", "!", "%20"];
-        const iconos = ["✨", "🔥", "🚀", "💡"];
-        const total = 10;
+  const textoParaBuscar = texto.substring(1);
 
-        for (let i = 0; i < total; i++) {
-          const query = base + variaciones[i % variaciones.length];
-          const url = "https://www.google.com/search?q=" + encodeURIComponent(query);
-          const nueva = window.open(url, "_blank");
-          try {
-            if (nueva) nueva.document.title = iconos[i % iconos.length] + " MaxiChat";
-          } catch (e) {}
-        }
-      <\/script>
-    </body>
-    </html>
-  `;
+  // Obtener el número de pestañas y validar
+  let numPestanas = parseInt(numPestanasInput.value);
+  if (isNaN(numPestanas) || numPestanas < 5 || numPestanas > 1000) {
+    alert("Por favor, ingresa un número de pestañas entre 5 y 1000.");
+    numPestanasInput.value = 500; // Restablecer al valor predeterminado si es inválido
+    return;
+  }
 
-  // Escribir el HTML generado en la nueva pestaña
-  win.document.open();
-  win.document.write(html);
-  win.document.close();
+  // Obtener los símbolos personalizados o usar los predeterminados
+  let iconosPersonalizados = iconosInput.value.split(',').map(icon => icon.trim()).filter(icon => icon.length > 0);
+  if (iconosPersonalizados.length === 0) {
+    iconosPersonalizados = ["✨", "🔥", "🚀", "💡", "🌟"]; // Iconos predeterminados
+  }
+
+  const variaciones = [
+    "", ".", "-", "3", "_", "a", "b", "1", "2", "!", "?", " ", "%20", "+", "&", "$", "#", "@", "*", "(", ")", "[", "]", "{", "}", ",", ";", ":", "'", '"', "/", "\\", "<", ">", "€", "£", "¥", "₪", "₹", "₩", "₱", "฿", "₫", "₡", "₵", "₲", "₸", "₺", "₴", "元", "円", "원"
+  ];
+
+  for (let i = 0; i < numPestanas; i++) {
+    const indiceVariacion = i % variaciones.length;
+    const textoConVariacion = textoParaBuscar + variaciones[indiceVariacion];
+    const urlGoogle = "https://www.google.com/search?q=" + encodeURIComponent(textoConVariacion);
+
+    const indiceIcono = i % iconosPersonalizados.length;
+    const nuevaPestana = window.open(urlGoogle, "_blank");
+
+    if (nuevaPestana) {
+      try {
+        // Añadimos un pequeño retraso para intentar que el título se establezca,
+        // aunque sigue siendo una operación con restricciones de seguridad.
+        setTimeout(() => {
+          nuevaPestana.document.title = iconosPersonalizados[indiceIcono] + " - MaxiChat";
+        }, 100); // 100ms de retraso
+      } catch (error) {
+        console.error("Error al intentar cambiar el título:", error);
+      }
+    }
+  }
 }
 </script>
 
