@@ -18,21 +18,22 @@
     background-color: #fff;
     padding: 40px;
     border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25); /* Sombra más pronunciada y moderna */
     text-align: center;
     width: 90%;
-    max-width: 500px; /* Un poco más ancho para los ajustes */
+    max-width: 500px;
     box-sizing: border-box;
-    overflow: hidden; /* Asegura que el contenido oculto no se desborde */
+    overflow: hidden;
   }
   h1 {
     color: #25d366; /* Verde principal de WhatsApp */
     margin-bottom: 25px;
-    font-size: 2.2em; /* Título un poco más grande */
+    font-size: 2.4em; /* Título un poco más grande */
+    letter-spacing: -0.5px; /* Pequeño ajuste para el espaciado de letras */
   }
   .input-group {
     margin-bottom: 20px;
-    text-align: left; /* Alinea etiquetas a la izquierda */
+    text-align: left;
   }
   .input-group label {
     display: block;
@@ -41,8 +42,7 @@
     color: #555;
   }
   input[type="text"],
-  input[type="number"],
-  select { /* Añadido select aquí */
+  input[type="number"] {
     padding: 12px 15px;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -53,14 +53,13 @@
   }
   input[type="text"]:focus,
   input[type="number"]:focus,
-  input[type="color"]:focus,
-  select:focus { /* Añadido select aquí */
+  input[type="color"]:focus {
     outline: none;
     border-color: #25d366;
     box-shadow: 0 0 8px rgba(37, 211, 102, 0.6);
   }
   input[type="number"] {
-    width: 100px; /* Ancho fijo para el número de pestañas */
+    width: 100px;
     text-align: center;
   }
   input[type="color"] {
@@ -69,10 +68,10 @@
     appearance: none;
     width: 40px;
     height: 40px;
-    border: none;
-    border-radius: 50%; /* Color picker circular */
+    border: 2px solid #e0e0e0; /* Borde para el color picker */
+    border-radius: 50%;
     cursor: pointer;
-    vertical-align: middle; /* Alinea con la etiqueta */
+    vertical-align: middle;
     margin-left: 10px;
     padding: 0;
   }
@@ -83,25 +82,28 @@
     border: none;
     border-radius: 50%;
   }
-  button {
-    padding: 15px 30px; /* Botón un poco más grande */
-    background-color: #25d366; /* Verde principal de WhatsApp */
+
+  /* Botones principales de la interfaz */
+  .main-button {
+    padding: 15px 30px;
+    background-color: #25d366;
     color: white;
     border: none;
-    border-radius: 10px; /* Bordes más redondeados */
+    border-radius: 10px;
     cursor: pointer;
-    font-size: 19px; /* Fuente un poco más grande */
+    font-size: 19px;
     transition: background-color 0.2s ease-in-out, transform 0.1s ease;
-    width: 100%; /* Ocupa todo el ancho disponible */
-    margin-top: 30px; /* Más espacio arriba */
+    width: 100%;
+    margin-top: 30px;
   }
-  button:hover {
-    background-color: #128c7e; /* Verde más oscuro al pasar el ratón */
-    transform: translateY(-2px); /* Pequeño efecto de elevación */
+  .main-button:hover {
+    background-color: #128c7e;
+    transform: translateY(-2px);
   }
-  button:active {
+  .main-button:active {
     transform: translateY(0);
   }
+
   .demo-text {
     color: #777;
     font-size: 14px;
@@ -134,20 +136,54 @@
     transition: transform 0.3s ease;
   }
   .settings-toggle.active .arrow {
-    transform: rotate(90deg); /* Gira la flecha cuando está abierto */
+    transform: rotate(90deg);
   }
 
   .settings-content {
-    max-height: 0; /* Oculto por defecto */
+    max-height: 0;
     overflow: hidden;
-    transition: max-height 0.4s ease-out; /* Transición suave al abrir/cerrar */
-    padding-top: 0; /* Sin padding cuando está cerrado */
-    border-top: 1px solid transparent; /* Transparente cuando está cerrado */
+    transition: max-height 0.4s ease-out;
+    padding-top: 0;
+    border-top: 1px solid transparent;
   }
   .settings-content.open {
-    max-height: 600px; /* Suficiente para mostrar el contenido (ajustar si es necesario) */
-    padding-top: 25px; /* Padding cuando está abierto */
-    border-top: 1px solid #eee; /* Borde cuando está abierto */
+    max-height: 600px; /* Ajustar si se añaden más opciones */
+    padding-top: 25px;
+    border-top: 1px solid #eee;
+  }
+
+  /* Estilos para los botones de servicio (nuevos) */
+  .service-buttons {
+    display: flex;
+    justify-content: space-around; /* Distribuye los botones equitativamente */
+    gap: 10px; /* Espacio entre botones */
+    margin-bottom: 20px; /* Espacio debajo de los botones */
+  }
+
+  .service-button {
+    flex: 1; /* Para que ocupen el mismo ancho */
+    padding: 10px 15px;
+    background-color: #f0f0f0; /* Color de fondo por defecto */
+    color: #666;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95em;
+    font-weight: bold;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    white-space: nowrap; /* Evita que el texto se rompa */
+  }
+
+  .service-button:hover {
+    background-color: #e0e0e0;
+    color: #333;
+  }
+
+  .service-button.active {
+    background-color: #25d366; /* Verde cuando está activo */
+    color: white;
+    border-color: #25d366;
+    box-shadow: 0 2px 8px rgba(37, 211, 102, 0.4); /* Sombra sutil para activo */
   }
 </style>
 </head>
@@ -158,23 +194,20 @@
 
   <div class="input-group">
     <label for="mensajeInput">Mensaje a Enviar:</label>
-    <input type="text" id="mensajeInput" placeholder="Escribe tu mensaje (¡comienza con '<' para activar la demo!)">
+    <input type="text" id="mensajeInput" placeholder="Escribe tu mensaje aquí">
+  </div>
+
+  <div class="service-buttons">
+    <button class="service-button active" data-service="google" onclick="setService('google', this)">Google</button>
+    <button class="service-button" data-service="drive" onclick="setService('drive', this)">Google Drive</button>
+    <button class="service-button" data-service="docs" onclick="setService('docs', this)">Google Docs</button>
   </div>
 
   <button class="settings-toggle" onclick="toggleSettings()">
-    Ajustes Avanzados <span class="arrow">▶</span>
+    Más Ajustes <span class="arrow">▶</span>
   </button>
 
   <div id="settingsContent" class="settings-content">
-    <div class="input-group">
-      <label for="searchService">Servicio de Destino:</label>
-      <select id="searchService">
-        <option value="google">Google (Búsqueda)</option>
-        <option value="drive">Google Drive (Búsqueda)</option>
-        <option value="docs">Documentos de Google (Abrir por ID)</option>
-      </select>
-    </div>
-
     <div class="input-group">
       <label for="numPestanasInput">Número de Pestañas (5-1000):</label>
       <input type="number" id="numPestanasInput" value="500" min="5" max="1000">
@@ -191,8 +224,8 @@
     </div>
   </div>
 
-  <button id="botonMax" onclick="abrirPestanas()">¡Enviar Mensajes! 💬</button>
-  <p class="demo-text">Esta es una versión demo. Recuerda que puede ralentizar tu navegador.</p>
+  <button id="botonMax" class="main-button" onclick="abrirPestanas()">¡Enviar Mensajes! 💬</button>
+  <p class="demo-text">Esta es una versión demo. Recuerda que abrir muchas pestañas puede ralentizar tu navegador.</p>
 </div>
 
 <script>
@@ -201,10 +234,12 @@ const numPestanasInput = document.getElementById("numPestanasInput");
 const iconosInput = document.getElementById("iconosInput");
 const bgColorInput = document.getElementById("bgColorInput");
 const botonMax = document.getElementById("botonMax");
-const searchServiceSelect = document.getElementById("searchService");
 
 const settingsToggleBtn = document.querySelector(".settings-toggle");
 const settingsContentDiv = document.getElementById("settingsContent");
+const serviceButtons = document.querySelectorAll(".service-button"); // Obtener todos los botones de servicio
+
+let currentService = "google"; // Variable para almacenar el servicio seleccionado (predeterminado)
 
 // Establecer el color de fondo inicial al cargar
 document.body.style.backgroundColor = bgColorInput.value;
@@ -228,20 +263,31 @@ function toggleSettings() {
   settingsToggleBtn.classList.toggle("active"); // Para girar la flecha
 }
 
+// Función para establecer el servicio de búsqueda
+function setService(service, clickedButton) {
+  currentService = service; // Actualizar la variable del servicio
+
+  // Remover la clase 'active' de todos los botones de servicio
+  serviceButtons.forEach(button => {
+    button.classList.remove("active");
+  });
+
+  // Añadir la clase 'active' al botón clickeado
+  clickedButton.classList.add("active");
+}
+
 
 function abrirPestanas() {
   const texto = mensajeInput.value;
-  if (!texto.startsWith("<")) {
-    alert("¡Ups! Parece que esta función aún está en desarrollo. Asegúrate de que tu mensaje comience con '<' para probarla.");
+  // ** Eliminada la restricción del '<' **
+
+  if (texto.trim().length === 0) { // Ahora solo comprueba si el texto está vacío
+    alert("Por favor, escribe un mensaje para enviar.");
     return;
   }
 
-  if (texto.trim().length <= 1) {
-    alert("Por favor, escribe un mensaje válido (debe tener al menos un carácter después de '<') para enviar.");
-    return;
-  }
-
-  const textoParaBuscar = texto.substring(1);
+  // ** Eliminada la línea de .substring(1) **
+  const textoParaBuscar = texto; // Ahora se usa el texto completo directamente
 
   // Obtener el número de pestañas y validar
   let numPestanas = parseInt(numPestanasInput.value);
@@ -261,41 +307,31 @@ function abrirPestanas() {
     "", ".", "-", "3", "_", "a", "b", "1", "2", "!", "?", " ", "%20", "+", "&", "$", "#", "@", "*", "(", ")", "[", "]", "{", "}", ",", ";", ":", "'", '"', "/", "\\", "<", ">", "€", "£", "¥", "₪", "₹", "₩", "₱", "฿", "₫", "₡", "₵", "₲", "₸", "₺", "₴", "元", "円", "원"
   ];
 
-  // Determinar la URL base según el servicio seleccionado y construir la URL final
-  const selectedService = searchServiceSelect.value;
   let finalUrl = "";
-  let encodedText = ""; // Variable para el texto codificado
-
+  
   for (let i = 0; i < numPestanas; i++) {
     const indiceVariacion = i % variaciones.length;
     const textoConVariacion = textoParaBuscar + variaciones[indiceVariacion];
     
     // El texto se codifica de forma diferente o no, según el servicio
-    // Para IDs, no siempre se debe usar encodeURIComponent en la totalidad,
-    // sino solo en las partes variables si es necesario.
-    encodedText = encodeURIComponent(textoConVariacion); 
+    // Para IDs, no siempre se debe usar encodeURIComponent en la totalidad.
+    const encodedTextForSearch = encodeURIComponent(textoConVariacion); 
 
-    switch (selectedService) {
+    switch (currentService) { // Usamos la variable 'currentService'
       case "google":
-        finalUrl = `https://www.google.com/search?q=${encodedText}`;
+        finalUrl = `https://www.google.com/search?q=${encodedTextForSearch}`;
         break;
       case "drive":
-        finalUrl = `https://drive.google.com/drive/search?hl=es&q=${encodedText}`;
+        finalUrl = `https://drive.google.com/drive/search?hl=es&q=${encodedTextForSearch}`;
         break;
       case "docs":
         // Para Google Docs, el texto del usuario + variación reemplaza el ID del documento
-        // Aquí NO se codifica todo el ID, solo la parte del ID si contiene caracteres especiales
-        // En este caso, el texto del usuario ya se considera el ID o parte del ID,
-        // por lo que `encodedText` es lo que se inserta directamente.
+        // Aquí no se codifica la parte del ID con encodeURIComponent, ya que los IDs
+        // suelen ser seguros para URL y codificarlos podría invalidarlos.
         finalUrl = `https://docs.google.com/document/d/${textoConVariacion}/edit?tab=t.0`; 
-        // Nota: `textoConVariacion` se usa directamente aquí. Si los IDs de documentos
-        // pudiesen contener caracteres especiales que necesiten codificación URL,
-        // tendríamos que revisar si encodeURIComponent en la parte del ID es apropiado
-        // o si los IDs de GDocs ya están "limpios". Para la mayoría de los IDs reales,
-        // suelen ser caracteres seguros, por lo que `textoConVariacion` suele ser suficiente.
         break;
       default:
-        finalUrl = `https://www.google.com/search?q=${encodedText}`; // Fallback
+        finalUrl = `https://www.google.com/search?q=${encodedTextForSearch}`; // Fallback por si acaso
     }
     
     const indiceIcono = i % iconosPersonalizados.length;
