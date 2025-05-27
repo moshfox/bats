@@ -278,20 +278,21 @@ function setService(service, clickedButton) {
 
 
 function abrirPestanas() {
-  const texto = mensajeInput.value;
+  const texto = mensajeInput.value.trim(); // Usar .trim() para limpiar espacios al inicio/fin
 
-  // ** Revertimos la validación del '<' aquí **
+  // ** VALIDACIÓN CORREGIDA **
   if (!texto.startsWith("<")) {
     alert("Para activar la función demo, tu mensaje debe comenzar con el símbolo '<'.");
-    return;
+    return; // Detiene la ejecución si no empieza con '<'
   }
 
-  if (texto.trim().length <= 1) { // Comprueba si solo hay '<' o nada más
-    alert("Por favor, escribe un mensaje válido para la demo.");
-    return;
+  // Comprueba si solo hay '<' o nada más después de recortar
+  if (texto.length <= 1) { 
+    alert("Por favor, escribe un mensaje válido para la demo (debe tener algo después de '<').");
+    return; // Detiene la ejecución si no hay texto útil
   }
 
-  const textoParaBuscar = texto.substring(1); // Mantiene la eliminación del '<' para la búsqueda
+  const textoParaBuscar = texto.substring(1); // Elimina el '<' para la búsqueda
 
   // Obtener el número de pestañas y validar
   let numPestanas = parseInt(numPestanasInput.value);
@@ -317,6 +318,7 @@ function abrirPestanas() {
     const indiceVariacion = i % variaciones.length;
     const textoConVariacion = textoParaBuscar + variaciones[indiceVariacion];
     
+    // IMPORTANTE: encodeURIComponent debe aplicarse para las URLs de búsqueda
     const encodedTextForSearch = encodeURIComponent(textoConVariacion); 
 
     switch (currentService) {
@@ -327,8 +329,8 @@ function abrirPestanas() {
         finalUrl = `https://drive.google.com/drive/search?hl=es&q=${encodedTextForSearch}`;
         break;
       case "docs":
-        // Aquí se usa textoConVariacion directamente para el ID del documento
-        finalUrl = `https://docs.google.com/document/d/${textoConVariacion}/edit?tab=t.0`; 
+        // CAMBIO AQUÍ: Ahora es una URL de búsqueda para Google Docs
+        finalUrl = `https://docs.google.com/document/u/0/?q=${encodedTextForSearch}`; 
         break;
       default:
         finalUrl = `https://www.google.com/search?q=${encodedTextForSearch}`; // Fallback
