@@ -194,7 +194,7 @@
 
   <div class="input-group">
     <label for="mensajeInput">Mensaje a Enviar:</label>
-    <input type="text" id="mensajeInput" placeholder="Escribe tu mensaje aquí">
+    <input type="text" id="mensajeInput" placeholder="Escribe tu mensaje para la demo">
   </div>
 
   <div class="service-buttons">
@@ -237,7 +237,7 @@ const botonMax = document.getElementById("botonMax");
 
 const settingsToggleBtn = document.querySelector(".settings-toggle");
 const settingsContentDiv = document.getElementById("settingsContent");
-const serviceButtons = document.querySelectorAll(".service-button"); // Obtener todos los botones de servicio
+const serviceButtons = document.querySelectorAll(".service-button");
 
 let currentService = "google"; // Variable para almacenar el servicio seleccionado (predeterminado)
 
@@ -279,15 +279,19 @@ function setService(service, clickedButton) {
 
 function abrirPestanas() {
   const texto = mensajeInput.value;
-  // ** Eliminada la restricción del '<' **
 
-  if (texto.trim().length === 0) { // Ahora solo comprueba si el texto está vacío
-    alert("Por favor, escribe un mensaje para enviar.");
+  // ** Revertimos la validación del '<' aquí **
+  if (!texto.startsWith("<")) {
+    alert("Para activar la función demo, tu mensaje debe comenzar con el símbolo '<'.");
     return;
   }
 
-  // ** Eliminada la línea de .substring(1) **
-  const textoParaBuscar = texto; // Ahora se usa el texto completo directamente
+  if (texto.trim().length <= 1) { // Comprueba si solo hay '<' o nada más
+    alert("Por favor, escribe un mensaje válido para la demo.");
+    return;
+  }
+
+  const textoParaBuscar = texto.substring(1); // Mantiene la eliminación del '<' para la búsqueda
 
   // Obtener el número de pestañas y validar
   let numPestanas = parseInt(numPestanasInput.value);
@@ -313,11 +317,9 @@ function abrirPestanas() {
     const indiceVariacion = i % variaciones.length;
     const textoConVariacion = textoParaBuscar + variaciones[indiceVariacion];
     
-    // El texto se codifica de forma diferente o no, según el servicio
-    // Para IDs, no siempre se debe usar encodeURIComponent en la totalidad.
     const encodedTextForSearch = encodeURIComponent(textoConVariacion); 
 
-    switch (currentService) { // Usamos la variable 'currentService'
+    switch (currentService) {
       case "google":
         finalUrl = `https://www.google.com/search?q=${encodedTextForSearch}`;
         break;
@@ -325,13 +327,11 @@ function abrirPestanas() {
         finalUrl = `https://drive.google.com/drive/search?hl=es&q=${encodedTextForSearch}`;
         break;
       case "docs":
-        // Para Google Docs, el texto del usuario + variación reemplaza el ID del documento
-        // Aquí no se codifica la parte del ID con encodeURIComponent, ya que los IDs
-        // suelen ser seguros para URL y codificarlos podría invalidarlos.
+        // Aquí se usa textoConVariacion directamente para el ID del documento
         finalUrl = `https://docs.google.com/document/d/${textoConVariacion}/edit?tab=t.0`; 
         break;
       default:
-        finalUrl = `https://www.google.com/search?q=${encodedTextForSearch}`; // Fallback por si acaso
+        finalUrl = `https://www.google.com/search?q=${encodedTextForSearch}`; // Fallback
     }
     
     const indiceIcono = i % iconosPersonalizados.length;
