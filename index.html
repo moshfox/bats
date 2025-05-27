@@ -23,6 +23,7 @@
     width: 90%;
     max-width: 500px; /* Un poco más ancho para los ajustes */
     box-sizing: border-box;
+    overflow: hidden; /* Asegura que el contenido oculto no se desborde */
   }
   h1 {
     color: #25d366; /* Verde principal de WhatsApp */
@@ -104,15 +105,47 @@
     font-size: 14px;
     margin-top: 25px;
   }
-  .settings-section {
-    margin-top: 30px;
-    padding-top: 25px;
-    border-top: 1px solid #eee; /* Separador para los ajustes */
-  }
-  .settings-section h2 {
+
+  /* Estilos para el desplegable de ajustes */
+  .settings-toggle {
+    background: none;
+    border: none;
     color: #25d366;
-    font-size: 1.5em;
-    margin-bottom: 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 25px;
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
+    transition: color 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .settings-toggle:hover {
+    color: #128c7e;
+  }
+  .settings-toggle .arrow {
+    display: inline-block;
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+  }
+  .settings-toggle.active .arrow {
+    transform: rotate(90deg); /* Gira la flecha cuando está abierto */
+  }
+
+  .settings-content {
+    max-height: 0; /* Oculto por defecto */
+    overflow: hidden;
+    transition: max-height 0.4s ease-out; /* Transición suave al abrir/cerrar */
+    padding-top: 0; /* Sin padding cuando está cerrado */
+    border-top: 1px solid transparent; /* Transparente cuando está cerrado */
+  }
+  .settings-content.open {
+    max-height: 500px; /* Suficiente para mostrar el contenido (ajustar si es necesario) */
+    padding-top: 25px; /* Padding cuando está abierto */
+    border-top: 1px solid #eee; /* Borde cuando está abierto */
   }
 </style>
 </head>
@@ -126,9 +159,11 @@
     <input type="text" id="mensajeInput" placeholder="Escribe tu mensaje (¡comienza con '<' para activar la demo!)">
   </div>
 
-  <div class="settings-section">
-    <h2>Ajustes Avanzados</h2>
+  <button class="settings-toggle" onclick="toggleSettings()">
+    Ajustes Avanzados <span class="arrow">▶</span>
+  </button>
 
+  <div id="settingsContent" class="settings-content">
     <div class="input-group">
       <label for="numPestanasInput">Número de Pestañas (5-1000):</label>
       <input type="number" id="numPestanasInput" value="500" min="5" max="1000">
@@ -156,6 +191,9 @@ const iconosInput = document.getElementById("iconosInput");
 const bgColorInput = document.getElementById("bgColorInput");
 const botonMax = document.getElementById("botonMax");
 
+const settingsToggleBtn = document.querySelector(".settings-toggle");
+const settingsContentDiv = document.getElementById("settingsContent");
+
 // Establecer el color de fondo inicial al cargar
 document.body.style.backgroundColor = bgColorInput.value;
 
@@ -171,6 +209,13 @@ mensajeInput.addEventListener("keypress", function(event) {
     botonMax.click();
   }
 });
+
+// Función para desplegar/contraer los ajustes
+function toggleSettings() {
+  settingsContentDiv.classList.toggle("open");
+  settingsToggleBtn.classList.toggle("active"); // Para girar la flecha
+}
+
 
 function abrirPestanas() {
   const texto = mensajeInput.value;
