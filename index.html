@@ -6,32 +6,39 @@
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         display: flex;
-        flex-direction: column; /* Cambiado a columna para el botón de configuración arriba */
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
         background-color: #d1fae5; /* Predeterminado: Verde claro de WhatsApp */
         margin: 0;
         color: #333;
-        transition: background-color 0.3s ease; /* Transición suave para el cambio de color */
-        overflow-x: hidden; /* Evita scroll horizontal */
+        transition: background-color 0.3s ease;
+        overflow-x: hidden;
     }
-    #advancedSettingsButton {
+
+    /* Botones de configuración superior */
+    #advancedSettingsButton, #liteModeToggle {
         position: absolute;
         top: 20px;
-        right: 20px;
         padding: 10px 15px;
-        background-color: #007bff; /* Azul para distinguirlo */
+        background-color: #00a87a; /* Verde más acorde */
         color: white;
         border: none;
         border-radius: 8px;
         cursor: pointer;
         font-size: 0.9em;
         transition: background-color 0.2s ease;
-        z-index: 100; /* Asegura que esté por encima */
+        z-index: 100;
     }
-    #advancedSettingsButton:hover {
-        background-color: #0056b3;
+    #advancedSettingsButton {
+        right: 20px;
+    }
+    #liteModeToggle {
+        left: 20px;
+    }
+    #advancedSettingsButton:hover, #liteModeToggle:hover {
+        background-color: #007a5c;
     }
 
     #progressBarContainer {
@@ -40,11 +47,11 @@
         height: 15px;
         background-color: #e0e0e0;
         border-radius: 8px;
-        margin-top: 10px; /* Espacio debajo del botón de configuración */
+        margin-top: 10px;
         overflow: hidden;
-        display: none; /* Oculto por defecto */
-        position: absolute; /* Para centrarlo arriba */
-        top: 20px;
+        display: none;
+        position: absolute;
+        top: 20px; /* Centrado arriba */
         left: 50%;
         transform: translateX(-50%);
         z-index: 99;
@@ -52,7 +59,7 @@
     #progressBar {
         height: 100%;
         width: 0%;
-        background-color: #25d366; /* Color de progreso */
+        background-color: #25d366;
         border-radius: 8px;
         transition: width 0.3s ease;
     }
@@ -69,7 +76,7 @@
         overflow: hidden;
         position: relative;
         z-index: 10;
-        margin-top: 60px; /* Para dejar espacio a la barra de progreso y botón de config */
+        margin-top: 60px;
     }
     h1 {
         color: #25d366;
@@ -89,7 +96,7 @@
     }
     input[type="text"],
     input[type="number"],
-    input[type="url"], /* Nuevo tipo */
+    input[type="url"],
     select {
         padding: 12px 15px;
         border: 1px solid #e0e0e0;
@@ -156,17 +163,17 @@
 
     #closeAllButton {
         padding: 10px 20px;
-        background-color: #ff4d4d; /* Rojo para cerrar */
+        background-color: #ff4d4d;
         color: white;
         border: none;
         border-radius: 8px;
         cursor: pointer;
         font-size: 1em;
         margin-top: 15px;
-        width: auto; /* Ancho automático para no ser muy grande */
-        display: inline-block; /* Para centrarlo mejor */
-        transition: background-color 0.2s ease;
-        display: none; /* Oculto por defecto */
+        width: auto;
+        display: none;
+        margin-left: auto; /* Para centrar */
+        margin-right: auto; /* Para centrar */
     }
     #closeAllButton:hover {
         background-color: #cc0000;
@@ -227,10 +234,12 @@
         justify-content: space-around;
         gap: 10px;
         margin-bottom: 20px;
+        flex-wrap: wrap; /* Permite que los botones se envuelvan si hay muchos */
     }
 
     .service-button {
         flex: 1;
+        min-width: 80px; /* Para que no sean demasiado pequeños */
         padding: 10px 15px;
         background-color: #f0f0f0;
         color: #666;
@@ -253,6 +262,11 @@
         color: white;
         border-color: #25d366;
         box-shadow: 0 2px 8px rgba(37, 211, 102, 0.4);
+    }
+    /* El botón de URL personalizada se centrará si está solo en su línea */
+    #customUrlButton {
+        flex-basis: 100%; /* Ocupa todo el ancho si está activo */
+        margin-top: 10px; /* Separación de los de arriba */
     }
 
     /* --- ESTILOS HACKERMAN OVERLAY --- */
@@ -393,11 +407,17 @@
     .dark-theme #progressBar {
         background-color: #e67e22;
     }
-    .dark-theme #advancedSettingsButton {
+    .dark-theme #advancedSettingsButton, .dark-theme #liteModeToggle {
         background-color: #3498db;
     }
-    .dark-theme #advancedSettingsButton:hover {
+    .dark-theme #advancedSettingsButton:hover, .dark-theme #liteModeToggle:hover {
         background-color: #217dbb;
+    }
+    .dark-theme #messageBox {
+        background-color: #27ae60; /* Verde más oscuro para dark theme */
+    }
+    .dark-theme #messageBox.error {
+        background-color: #c0392b;
     }
 
 
@@ -474,14 +494,22 @@
         background-color: #ff00ff;
         box-shadow: 0 0 5px #ff00ff;
     }
-    .cyberpunk-theme #advancedSettingsButton {
+    .cyberpunk-theme #advancedSettingsButton, .cyberpunk-theme #liteModeToggle {
         background-color: #00ffff;
         color: #1a0f30;
         box-shadow: 0 0 5px #00ffff;
     }
-    .cyberpunk-theme #advancedSettingsButton:hover {
+    .cyberpunk-theme #advancedSettingsButton:hover, .cyberpunk-theme #liteModeToggle:hover {
         background-color: #00cccc;
     }
+    .cyberpunk-theme #messageBox {
+        background-color: #ff00ff;
+        box-shadow: 0 0 8px rgba(255, 0, 255, 0.6);
+    }
+    .cyberpunk-theme #messageBox.error {
+        background-color: #ff33cc;
+    }
+
 
     /* Contador de progreso */
     #progress-counter {
@@ -504,12 +532,12 @@
         bottom: 20px;
         left: 50%;
         transform: translateX(-50%);
-        background-color: #4CAF50; /* Verde por defecto para éxito */
+        background-color: #4CAF50;
         color: white;
         padding: 15px 25px;
         border-radius: 8px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        display: none; /* Oculto por defecto */
+        display: none;
         align-items: center;
         justify-content: space-between;
         gap: 15px;
@@ -519,7 +547,7 @@
         text-align: left;
     }
     #messageBox.error {
-        background-color: #f44336; /* Rojo para error */
+        background-color: #f44336;
     }
     #messageBox .close-btn {
         background: none;
@@ -528,21 +556,21 @@
         font-size: 1.5em;
         cursor: pointer;
         font-weight: bold;
-        line-height: 1; /* Asegura el centrado vertical del X */
+        line-height: 1;
         padding: 0;
     }
 
     /* Advanced Settings Modal */
     #advancedSettingsModal {
-        display: none; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 1002; /* Sit on top */
+        display: none;
+        position: fixed;
+        z-index: 1002;
         left: 0;
         top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.7);
         justify-content: center;
         align-items: center;
     }
@@ -584,9 +612,11 @@
         display: flex;
         align-items: center;
         margin-bottom: 5px;
+        font-weight: bold; /* Hacer las labels del modal bold también */
+        color: #555; /* Mismo color que las labels principales */
     }
     #advancedSettingsModal .input-group input[type="checkbox"] {
-        width: auto; /* Overwrite 100% width */
+        width: auto;
         margin-right: 10px;
         transform: scale(1.2);
     }
@@ -634,6 +664,22 @@
     .dark-theme #advancedSettingsModal .modal-footer button:hover {
         background-color: #d35400;
     }
+    .dark-theme #advancedSettingsModal .input-group label {
+        color: #ecf0f1;
+    }
+    .dark-theme #advancedSettingsModal input[type="number"],
+    .dark-theme #advancedSettingsModal input[type="url"],
+    .dark-theme #advancedSettingsModal input[type="datetime-local"] {
+        background-color: #2c3e50;
+        color: #ecf0f1;
+        border-color: #4a627a;
+    }
+    .dark-theme #advancedSettingsModal input[type="number"]:focus,
+    .dark-theme #advancedSettingsModal input[type="url"]:focus,
+    .dark-theme #advancedSettingsModal input[type="datetime-local"]:focus {
+        border-color: #e67e22;
+        box-shadow: 0 0 8px rgba(230, 126, 34, 0.6);
+    }
 
     .cyberpunk-theme #advancedSettingsModal .modal-content {
         background-color: #2e0f4f;
@@ -659,11 +705,50 @@
     .cyberpunk-theme #advancedSettingsModal .modal-footer button:hover {
         background-color: #00cccc;
     }
+    .cyberpunk-theme #advancedSettingsModal .input-group label {
+        color: #00ffff;
+    }
+    .cyberpunk-theme #advancedSettingsModal input[type="number"],
+    .cyberpunk-theme #advancedSettingsModal input[type="url"],
+    .cyberpunk-theme #advancedSettingsModal input[type="datetime-local"] {
+        background-color: #1a0f30;
+        color: #00ffff;
+        border-color: #00ffff;
+        box-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+    }
+    .cyberpunk-theme #advancedSettingsModal input[type="number"]:focus,
+    .cyberpunk-theme #advancedSettingsModal input[type="url"]:focus,
+    .cyberpunk-theme #advancedSettingsModal input[type="datetime-local"]:focus {
+        border-color: #ff00ff;
+        box-shadow: 0 0 10px rgba(255, 0, 255, 0.8);
+    }
 
+    /* Estilos para el Modo Lite */
+    body.lite-mode #container .input-group:not(#mensajeInputGroup):not(#numPestanasInputGroup) {
+        display: none; /* Oculta todos los input-groups excepto mensaje y numPestanas */
+    }
+    body.lite-mode #container .settings-toggle,
+    body.lite-mode #container .service-buttons,
+    body.lite-mode #container .demo-text {
+        display: none; /* Oculta elementos adicionales */
+    }
+    body.lite-mode #container {
+        padding-top: 20px; /* Ajusta el padding para un look más compacto */
+        padding-bottom: 20px;
+    }
+    body.lite-mode #container h1 {
+        margin-bottom: 15px;
+    }
+    /* Asegurarse de que el input-group del mensaje y número de pestañas se vean */
+    .lite-mode #mensajeInputGroup,
+    .lite-mode #numPestanasInputGroup {
+        display: block !important;
+    }
 </style>
 </head>
 <body>
 
+<button id="liteModeToggle" onclick="toggleLiteMode()">Modo Lite 💡</button>
 <button id="advancedSettingsButton" onclick="openAdvancedSettings()">Configuración Avanzada ⚙️</button>
 <div id="progressBarContainer">
     <div id="progressBar"></div>
@@ -672,7 +757,7 @@
 <div id="container">
     <h1>¡MaxiChat Pro! 🚀</h1>
 
-    <div class="input-group">
+    <div class="input-group" id="mensajeInputGroup">
         <label for="mensajeInput">Mensaje a Enviar:</label>
         <input type="text" id="mensajeInput" placeholder="Escribe tu mensaje para la demo">
     </div>
@@ -681,15 +766,15 @@
         <button class="service-button active" data-service="google" onclick="setService('google', this)">Google</button>
         <button class="service-button" data-service="drive" onclick="setService('drive', this)">Google Drive</button>
         <button class="service-button" data-service="docs" onclick="setService('docs', this)">Google Docs</button>
-        <button id="customUrlButton" class="service-button" data-service="custom" onclick="setService('custom', this)" style="display: none;">URL Personalizada</button>
     </div>
+    <button id="customUrlButton" class="service-button" data-service="custom" onclick="setService('custom', this)" style="display: none;">URL Personalizada</button>
 
     <button class="settings-toggle" onclick="toggleSettings()">
         Más Ajustes <span class="arrow">▶</span>
     </button>
 
     <div id="settingsContent" class="settings-content">
-        <div class="input-group">
+        <div class="input-group" id="numPestanasInputGroup">
             <label for="numPestanasInput">Número de Pestañas (5-1000):</label>
             <input type="number" id="numPestanasInput" value="500" min="5" max="1000">
         </div>
@@ -722,7 +807,7 @@
 </div>
 
 <div id="hackerman-overlay">
-    <div class="console-line"><span style="color: #00ff00;">MaxiChat Pro v1.3b - [STATUS: ACTIVE]</span></div>
+    <div class="console-line"><span style="color: #00ff00;">MaxiChat Pro v1.4b - [STATUS: ACTIVE]</span></div>
     <div class="console-line"><span style="color: #00ff00;">Initializing system core... [OK]</span></div>
     <div class="console-line">
         <span style="color: #00ff00;">&gt; Attempting connection to remote servers...</span>
@@ -768,6 +853,19 @@
             <p style="font-size: 0.8em; color: #777; margin-top: 5px;">Usa `{query}` como marcador de posición para el mensaje.</p>
         </div>
 
+        <div class="input-group">
+            <label>
+                <input type="checkbox" id="ghostModeToggle">
+                Modo "Ghost" (Experimental)
+            </label>
+            <p style="font-size: 0.8em; color: #777; margin-top: 5px;">
+                Para activar: el mensaje debe comenzar con `&lt;` y terminar con `&gt;*`.
+                (Ej: `&lt;Mi mensaje&gt;*`)
+                <br>Intenta abrir pestañas minimizadas o en segundo plano. **Comportamiento varía por navegador.**
+            </p>
+        </div>
+
+
         <div class="modal-footer">
             <button onclick="saveAdvancedSettings()">Guardar Configuración</button>
         </div>
@@ -803,16 +901,22 @@ const delayBetweenTabsInput = document.getElementById("delayBetweenTabsInput");
 const scheduledTimeInput = document.getElementById("scheduledTimeInput");
 const customUrlToggle = document.getElementById("customUrlToggle");
 const customUrlInput = document.getElementById("customUrlInput");
+const ghostModeToggle = document.getElementById("ghostModeToggle"); // Nuevo
+
+const liteModeToggleBtn = document.getElementById("liteModeToggle"); // Nuevo
+const container = document.getElementById("container"); // Nuevo
+
 
 let currentService = "google";
 let consoleInterval;
-let openedTabs = []; // Array para almacenar las referencias de las pestañas abiertas
+let openedTabs = [];
 
-let delayBetweenTabs = 0; // Por defecto sin retraso
+let delayBetweenTabs = 0;
 let useDelay = false;
 let useCustomUrl = false;
 let customBaseUrl = "";
 let scheduledTime = null;
+let useGhostMode = false; // Nuevo
 
 const hackermanMessages = [
     "ACCESS GRANTED: Root privileges acquired.",
@@ -834,7 +938,7 @@ const hackermanMessages = [
 document.addEventListener('DOMContentLoaded', (event) => {
     applyTheme(themeSelect.value);
     document.body.style.backgroundColor = bgColorInput.value;
-    loadAdvancedSettings(); // Cargar configuraciones avanzadas al inicio
+    loadAdvancedSettings();
     updateCustomUrlButtonVisibility();
 });
 
@@ -855,12 +959,13 @@ delayBetweenTabsToggle.addEventListener("change", function() {
 
 customUrlToggle.addEventListener("change", function() {
     customUrlInput.disabled = !this.checked;
-    updateCustomUrlButtonVisibility();
+    // Si activa URL personalizada y no es el servicio actual, lo cambia
     if (this.checked && currentService !== 'custom') {
-        setService('custom', customUrlButton); // Activa el botón de URL personalizada
-    } else if (!this.checked && currentService === 'custom') {
-        setService('google', document.querySelector('.service-button[data-service="google"]')); // Vuelve a Google
+        setService('custom', customUrlButton);
+    } else if (!this.checked && currentService === 'custom') { // Si desactiva y era el servicio activo, vuelve a Google
+        setService('google', document.querySelector('.service-button[data-service="google"]'));
     }
+    updateCustomUrlButtonVisibility();
 });
 
 
@@ -874,6 +979,10 @@ function setService(service, clickedButton) {
     serviceButtons.forEach(button => {
         button.classList.remove("active");
     });
+    // Si el botón de URL personalizada no está activo, activarlo
+    if (customUrlButton.style.display !== 'none') {
+        customUrlButton.classList.remove("active");
+    }
     clickedButton.classList.add("active");
 }
 
@@ -884,6 +993,12 @@ function applyTheme(theme) {
         document.body.style.backgroundColor = bgColorInput.value;
     } else {
         document.body.classList.add(theme + '-theme');
+    }
+    // Asegurar que el modal también aplique el tema
+    const modalContent = advancedSettingsModal.querySelector('.modal-content');
+    modalContent.classList.remove('dark-theme', 'cyberpunk-theme');
+    if (theme !== 'default') {
+        modalContent.classList.add(theme); // Aplicar tema al contenido del modal
     }
 }
 
@@ -900,7 +1015,6 @@ function hideMessageBox() {
 
 // --- FUNCIONES DEL MODAL DE CONFIGURACIÓN AVANZADA ---
 function openAdvancedSettings() {
-    // Cargar los valores actuales en el modal antes de abrirlo
     delayBetweenTabsToggle.checked = useDelay;
     delayBetweenTabsInput.value = delayBetweenTabs;
     delayBetweenTabsInput.disabled = !useDelay;
@@ -909,13 +1023,17 @@ function openAdvancedSettings() {
     customUrlInput.value = customBaseUrl;
     customUrlInput.disabled = !useCustomUrl;
 
+    ghostModeToggle.checked = useGhostMode; // Cargar estado del modo Ghost
+
     if (scheduledTime) {
-        // Formatear la fecha para el input datetime-local
         const dt = new Date(scheduledTime);
         scheduledTimeInput.value = dt.toISOString().substring(0, 16);
     } else {
         scheduledTimeInput.value = '';
     }
+
+    // Aplicar el tema actual al modal antes de mostrarlo
+    applyTheme(themeSelect.value);
 
     advancedSettingsModal.style.display = 'flex';
 }
@@ -940,9 +1058,11 @@ function saveAdvancedSettings() {
         useCustomUrl = false;
         customUrlInput.disabled = true;
         updateCustomUrlButtonVisibility();
-        return; // No cierra el modal si hay error
+        return;
     }
     updateCustomUrlButtonVisibility();
+
+    useGhostMode = ghostModeToggle.checked; // Guardar estado del modo Ghost
 
     const scheduledTimeValue = scheduledTimeInput.value;
     if (scheduledTimeValue) {
@@ -965,16 +1085,15 @@ function saveAdvancedSettings() {
 }
 
 function loadAdvancedSettings() {
-    // Aquí podrías cargar de localStorage si las guardaras allí
-    // Por ahora, se inicializan con los valores por defecto y se muestran en el modal.
+    // Aquí se podrían cargar de localStorage si se quisiera persistencia entre sesiones.
+    // Por ahora, se inicializan con los valores por defecto.
 }
 
 function updateCustomUrlButtonVisibility() {
     if (useCustomUrl) {
-        customUrlButton.style.display = 'inline-block';
+        customUrlButton.style.display = 'block'; // Usar 'block' para que ocupe su propia línea y se centre
     } else {
         customUrlButton.style.display = 'none';
-        // Si la URL personalizada se desactiva y era el servicio activo, volvemos a Google
         if (currentService === 'custom') {
             setService('google', document.querySelector('.service-button[data-service="google"]'));
         }
@@ -1012,27 +1131,40 @@ function closeAllTabs() {
             tab.close();
         }
     });
-    openedTabs = []; // Limpiar el array
-    document.getElementById('closeAllButton').style.display = 'none'; // Ocultar el botón
+    openedTabs = [];
+    document.getElementById('closeAllButton').style.display = 'none';
     showMessageBox("Todas las pestañas abiertas por MaxiChat han sido cerradas.", 'success');
+}
+
+// --- MODO LITE ---
+function toggleLiteMode() {
+    document.body.classList.toggle('lite-mode');
+    if (document.body.classList.contains('lite-mode')) {
+        liteModeToggleBtn.textContent = "Modo Normal 🌕";
+        // Asegurarse de que el panel de ajustes esté cerrado en modo lite
+        if (settingsContentDiv.classList.contains("open")) {
+            toggleSettings();
+        }
+    } else {
+        liteModeToggleBtn.textContent = "Modo Lite 💡";
+    }
 }
 
 // --- FUNCIÓN PRINCIPAL DE APERTURA DE PESTAÑAS ---
 async function abrirPestanas() {
-    hideMessageBox(); // Oculta cualquier mensaje anterior
+    hideMessageBox();
 
     if (scheduledTime) {
         const now = new Date().getTime();
         if (now < scheduledTime) {
             showMessageBox(`Apertura programada para: ${new Date(scheduledTime).toLocaleString()}. Esperando...`, 'success');
-            // Deshabilitar el botón y mostrar el contador de tiempo restante
             botonMax.disabled = true;
             const countdownInterval = setInterval(() => {
                 const timeLeft = scheduledTime - new Date().getTime();
                 if (timeLeft <= 0) {
                     clearInterval(countdownInterval);
                     progressCounter.textContent = "";
-                    startOpeningProcess(); // Iniciar el proceso real
+                    startOpeningProcess();
                 } else {
                     const seconds = Math.floor(timeLeft / 1000);
                     const minutes = Math.floor(seconds / 60);
@@ -1040,9 +1172,8 @@ async function abrirPestanas() {
                     progressCounter.textContent = `Iniciando en: ${hours % 24}h ${minutes % 60}m ${seconds % 60}s`;
                 }
             }, 1000);
-            return; // Salir y esperar la hora programada
+            return;
         } else {
-            // Si la hora ya pasó, limpiar y continuar
             scheduledTime = null;
             scheduledTimeInput.value = '';
         }
@@ -1053,6 +1184,8 @@ async function abrirPestanas() {
 
 async function startOpeningProcess() {
     const texto = mensajeInput.value.trim();
+    let textoParaBuscar = texto;
+    let isGhostAttempt = false;
 
     if (!texto.startsWith("<")) {
         showMessageBox("Para activar la función demo, tu mensaje debe comenzar con el símbolo '<'.", 'error');
@@ -1064,7 +1197,14 @@ async function startOpeningProcess() {
         return;
     }
 
-    const textoParaBuscar = texto.substring(1);
+    // Lógica para el modo Ghost
+    if (useGhostMode && texto.startsWith("<") && texto.endsWith(">*")) {
+        isGhostAttempt = true;
+        textoParaBuscar = texto.substring(1, texto.length - 2); // Quita '<' y '>*'
+        showMessageBox("Modo Ghost activado. Intentando abrir pestañas discretamente...", 'success');
+    } else {
+        textoParaBuscar = texto.substring(1); // Solo quita '<'
+    }
 
     let numPestanas = parseInt(numPestanasInput.value);
     if (isNaN(numPestanas) || numPestanas < 5 || numPestanas > 1000) {
@@ -1074,13 +1214,12 @@ async function startOpeningProcess() {
     }
 
     botonMax.disabled = true;
-    progressBarContainer.style.display = 'block'; // Muestra la barra de progreso
+    progressBarContainer.style.display = 'block';
     progressBar.style.width = '0%';
     progressCounter.textContent = "";
 
-    openedTabs = []; // Resetear las pestañas abiertas
+    openedTabs = [];
 
-    // 1. Mostrar la animación Hackerman y empezar los mensajes dinámicos
     hackermanOverlay.classList.add('active');
     startConsoleAnimation();
 
@@ -1116,16 +1255,24 @@ async function startOpeningProcess() {
                 case "docs":
                     finalUrl = `https://docs.google.com/document/u/0/?q=${encodedTextForSearch}`;
                     break;
-                default: // Fallback a Google si no se especifica bien o la URL personalizada falla
+                default:
                     finalUrl = `https://www.google.com/search?q=${encodedTextForSearch}`;
             }
         }
         
         const indiceIcono = i % finalIconos.length;
-        const nuevaPestana = window.open(finalUrl, "_blank", "noopener,noreferrer");
+        let nuevaPestana;
+        if (isGhostAttempt) {
+             // Intentar abrir con características para que sea "ghost"
+             // Estas opciones son solo un intento, los navegadores las ignoran o restringen mucho.
+            nuevaPestana = window.open(finalUrl, "_blank", "noopener,noreferrer,width=10,height=10,left=9999,top=9999,location=no,menubar=no,status=no,toolbar=no");
+        } else {
+            nuevaPestana = window.open(finalUrl, "_blank", "noopener,noreferrer");
+        }
+        
 
         if (nuevaPestana) {
-            openedTabs.push(nuevaPestana); // Almacenar la referencia de la pestaña
+            openedTabs.push(nuevaPestana);
             try {
                 setTimeout(() => {
                     nuevaPestana.document.title = finalIconos[indiceIcono] + " - MaxiChat";
@@ -1133,9 +1280,13 @@ async function startOpeningProcess() {
             } catch (error) {
                 console.error("Error al intentar cambiar el título:", error);
             }
+        } else {
+            // Manejar caso de bloqueador de pop-ups
+            showMessageBox("¡Advertencia! El navegador bloqueó una o más pestañas. Deshabilita tu bloqueador de pop-ups.", 'error');
+            // Opcionalmente, detener la operación o reducir el número de pestañas
+            break; 
         }
 
-        // Actualizar progreso
         const progress = ((i + 1) / numPestanas) * 100;
         progressBar.style.width = `${progress}%`;
         progressCounter.textContent = `Pestañas Abiertas: ${i + 1} de ${numPestanas}`;
@@ -1145,12 +1296,11 @@ async function startOpeningProcess() {
         }
     }
 
-    // Finalizar
     progressCounter.textContent = `¡Operación Completada! ${numPestanas} Pestañas Abiertas.`;
     showMessageBox(`¡Operación Completada! ${numPestanas} Pestañas Abiertas.`, 'success');
     botonMax.disabled = false;
-    progressBarContainer.style.display = 'none'; // Oculta la barra de progreso
-    document.getElementById('closeAllButton').style.display = 'block'; // Muestra el botón de cerrar todo
+    progressBarContainer.style.display = 'none';
+    document.getElementById('closeAllButton').style.display = 'block';
 }
 </script>
 
